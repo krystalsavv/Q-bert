@@ -6,16 +6,9 @@
 #include <assert.h>
 #include <vector>
 #include "Game.h"
+#include "List"
 
 using namespace std;
-
-typedef SDL_Texture* Bitmap;
-typedef SDL_Rect Rect;
-
-class AnimationFilm;
-class AnimationFilmHolder;
-class BitmapLoader;
-
 
 class AnimationFilm {
 	vector<SDL_Rect> boxes; //SDL_Rect sourceRect for each frame
@@ -45,9 +38,6 @@ public:
 		sousceRect.y = 0;
 		destRect.x = x;
 		destRect.y = y;
-		destRect.w = 70;
-		destRect.h = 70;
-
 	}
 
 	AnimationFilm(SDL_Texture* bitmap, const vector<SDL_Rect> boxes, string& id) {
@@ -76,7 +66,7 @@ class BitmapLoader {
 	}
 
 	void DestroyBitmap(SDL_Texture* bitmap) {
-		///// elena prepei na kanei kati sto telos gia destroe twn texture??
+		///// elena prepei na kanei kati sto telos gia destroy twn texture??
 	}
 
 public:
@@ -100,9 +90,6 @@ public:
 	BitmapLoader() {}
 	~BitmapLoader() { CleanUp(); }
 };
-
-
-
 
 
 class AnimationFilmHolder {
@@ -139,10 +126,6 @@ public:
 };
 
 
-
-
-
-
 class Sprite {
 	unsigned frameNo; // se pio frame ftanw apo to Animation film
 	SDL_Rect destinationRect;
@@ -163,18 +146,27 @@ public:
 	void SetVisibility(bool v) {
 		isVisible = v;
 	}
+	void SetZOrder(unsigned zOrder) {
+		this->zOrder = zOrder;
+	}
 
 	unsigned GetFrame(void) const {
 		return frameNo;
 	}
-	SDL_Rect GetDestinationRect() {
+	SDL_Rect& GetDestinationRect() {
 		return destinationRect;
 	}
-	SDL_Rect GetSourceRect() {
+	SDL_Rect& GetSourceRect() {
 		return sourceRect;
 	}
 	AnimationFilm *GetCurrFilm() {
 		return currFilm;
+	}
+	unsigned GetzOrder() {
+		return zOrder;
+	}
+	string GetId() {
+		return id;
 	}
 	bool IsVisible(void) const {
 		return isVisible;
@@ -182,8 +174,18 @@ public:
 
 	//virtual bool CollisionCheck(Sprite* s); // TO DO!!!
 
-	Sprite(const char *id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder) {
-		id = id;
+	virtual void Display(const int x, const int y) {
+		currFilm->DisplayFrame(x, y, sourceRect, destinationRect, frameNo);
+		SDL_RenderCopy(game->GetRenderer(), this->currFilm->GetBitmap(), &sourceRect, &destinationRect);
+	}
+
+	virtual void Display() {
+		currFilm->DisplayFrame(destinationRect.x, destinationRect.y, sourceRect, destinationRect, frameNo);
+		SDL_RenderCopy(game->GetRenderer(), this->currFilm->GetBitmap(), &sourceRect, &destinationRect);
+	}
+
+	Sprite(string id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder) {
+		this->id = id;
 		destinationRect.x = x;	// pou na mpei sto window
 		destinationRect.y = y;
 		destinationRect.w = w;
@@ -194,10 +196,83 @@ public:
 		SetFrame(0);
 	}
 
-	void Display(const int x, const int y) {
-		currFilm->DisplayFrame(x, y, sourceRect, destinationRect, frameNo);
-		SDL_RenderCopy(game->GetRenderer(), this->currFilm->GetBitmap(), &sourceRect, &destinationRect);
+	Sprite(const char *id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder) {
+		this->id = id;
+		destinationRect.x = x;	// pou na mpei sto window
+		destinationRect.y = y;
+		destinationRect.w = w;
+		destinationRect.h = h;
+		isVisible = true;
+		currFilm = film;
+		zOrder = zorder;
+		SetFrame(0);
 	}
 };
+
+class SpriteList  final  { 
+	list<Sprite *> list;
+
+	bool compare(Sprite* s1, Sprite* s2) {
+		return s1->GetzOrder() < s2->GetzOrder();
+	}
+public:
+
+	void Insert(Sprite* s) { // sorted by zOrder of each sprite
+		list.push_back(s);
+	//	list.sort(compare);
+	}
+
+	Sprite* Get(string id) {
+		for (auto i = list.begin(); i != list.end(); ++i) {
+			if ((*i)->GetId()== id) {
+				return *i;
+			}
+		}
+		return nullptr;
+	}
+
+	void Display() {
+		for (auto i = list.begin(); i != list.end(); ++i) {
+			(*i)->Display();
+		}
+	}
+};
+
+
+class CubeSprite : public Sprite {
+	unsigned row;
+	unsigned col;
+	unsigned ys;	// the top left pixel of the entire row of isocubes
+	unsigned xs;
+	unsigned yc;	// center 
+	unsigned xc;
+
+public:
+	void SetXs(unsigned xs) {
+		this->xs = xs;
+	}
+	void SetYs(unsigned ys) {
+		this->ys = ys;
+	}
+	void SetXc(unsigned xc) {
+	this->xc = xc;
+	}
+	void SetYc(unsigned yc) {
+		this->yc = yc;
+	}
+
+	CubeSprite(string id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder, unsigned  row, unsigned col) : 
+		Sprite(id, film, x, y, w, h, zorder) {
+		this->row = row;
+		this->col = col;
+	}
+	CubeSprite(char* id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder, unsigned  row, unsigned col) :
+		Sprite(id, film, x, y, w, h, zorder) {
+		this->row = row;
+		this->col = col;
+	}
+};
+
+extern SpriteList spriteList;
 
 #endif

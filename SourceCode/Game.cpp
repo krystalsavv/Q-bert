@@ -1,10 +1,10 @@
 #include "Game.h"
 #include "Sprites.h"
-extern Sprite *s;
+#include "Terrain.h"
 
 Game::Game(){
-	m_pWindow = NULL;
-	m_pRenderer = NULL;
+	m_pWindow = nullptr;
+	m_pRenderer = nullptr;
 	m_bRunning = true;
 }
 
@@ -14,7 +14,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
-		if (m_pWindow == NULL) {
+		if (m_pWindow == nullptr) {
 
 			std::cout << "SDL Error: Failed to create window: " << SDL_GetError() << std::endl;
 			SDL_Quit();
@@ -23,7 +23,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 
 		m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-		if (m_pRenderer == NULL) {
+		if (m_pRenderer == nullptr) {
 			std::cout << "SDL Error: Failed to create renderer: " << SDL_GetError() << std::endl;
 			SDL_DestroyWindow(m_pWindow);
 			SDL_Quit();
@@ -39,7 +39,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 
 void Game::render() {
 	SDL_RenderClear(m_pRenderer);
-	s->Display(200,200);
+	spriteList.Display();
 	SDL_RenderPresent(m_pRenderer); 
 }
 
