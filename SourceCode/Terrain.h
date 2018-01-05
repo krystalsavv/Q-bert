@@ -44,15 +44,16 @@ public:
 			if (film == nullptr) {
 				SDL_Rect rect; // prepei na fortwnetai kapws ayto 
 				rect.x = 0;
-				rect.y = 0;			// to blepei h elena
-				rect.h = 100;
-				rect.w = 100;
+				rect.y = 0;			
+				rect.h = 32;
+				rect.w = 32;
 				vector<SDL_Rect> boxes; //
 				boxes.push_back(rect);
 				string id = "cube";
 				AnimationFilmHolder::Get().Load(id, "Sprites/Active_1.bmp", boxes);
 				film = AnimationFilmHolder::Get().GetFilm("cube");
 			}
+
 			CubeSprite* s = new CubeSprite("cube" + to_string(i), film, 0, 0, 100, 100, 10, row, col);
 
 			// calculate destRect.x,y and x/ys and x/yc for each one with Compute_iso_cube_placement()

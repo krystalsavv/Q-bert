@@ -67,3 +67,11 @@ void Game::clean() {
 SDL_Renderer* Game::GetRenderer() {
 	return m_pRenderer;
 }
+
+
+
+//gia thn SpriteList (einai ligo akyrh edw alla den exw allo cpp arxeio na thn balw)
+//sort apo to mikrotero zOrder sto megalytero
+bool compare(Sprite* s1, Sprite* s2) {
+	return s1->GetzOrder() < s2->GetzOrder();
+}

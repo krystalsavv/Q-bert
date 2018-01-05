@@ -33,9 +33,6 @@ public:
 
 	void DisplayFrame(const int x, const int y, SDL_Rect& sousceRect, SDL_Rect& destRect, unsigned frameNo) const { //x , y -->at
 		sousceRect = boxes[frameNo];
-		SDL_QueryTexture(this->bitmap, NULL, NULL, &sousceRect.w, &sousceRect.h);
-		sousceRect.x = 0;
-		sousceRect.y = 0;
 		destRect.x = x;
 		destRect.y = y;
 	}
@@ -209,17 +206,19 @@ public:
 	}
 };
 
+
+bool compare(Sprite* s1, Sprite* s2);
+
 class SpriteList  final  { 
 	list<Sprite *> list;
 
-	bool compare(Sprite* s1, Sprite* s2) {
-		return s1->GetzOrder() < s2->GetzOrder();
-	}
+	
 public:
 
+	
 	void Insert(Sprite* s) { // sorted by zOrder of each sprite
 		list.push_back(s);
-	//	list.sort(compare);
+		list.sort(compare);
 	}
 
 	Sprite* Get(string id) {
