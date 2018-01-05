@@ -47,6 +47,22 @@ void Game::handleEvents() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		switch (event.type) {
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_UP)
+			{
+				cout << "Up arrow pressed" << endl;
+			}
+			else if (event.key.keysym.sym == SDLK_DOWN) {
+				cout << "Down arrow pressed" << endl;
+			}
+			else if (event.key.keysym.sym == SDLK_RIGHT) {
+				cout << "Right arrow pressed" << endl;
+			}
+			else if (event.key.keysym.sym == SDLK_LEFT) {
+				cout << "Left` arrow pressed" << endl;
+			}
+			break;
+			
 		case SDL_QUIT:
 			m_bRunning = false;
 			break;
