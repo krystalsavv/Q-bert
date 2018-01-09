@@ -40,20 +40,7 @@ public:
 			else {
 				++col;
 			}
-			AnimationFilm* film = AnimationFilmHolder::Get().GetFilm("cube");
-			if (film == nullptr) {
-				SDL_Rect rect; // prepei na fortwnetai kapws ayto 
-				rect.x = 0;
-				rect.y = 0;			
-				rect.h = 32;
-				rect.w = 32;
-				vector<SDL_Rect> boxes; //
-				boxes.push_back(rect);
-				string id = "cube";
-				AnimationFilmHolder::Get().Load(id, "Sprites/Active_1.bmp", boxes);
-				film = AnimationFilmHolder::Get().GetFilm("cube");
-			}
-
+			AnimationFilm* film = GetFilm();
 			CubeSprite* s = new CubeSprite("cube" + to_string(i), film, 0, 0, 100, 100, 10, row, col);
 
 			// calculate destRect.x,y and x/ys and x/yc for each one with Compute_iso_cube_placement()
@@ -90,6 +77,27 @@ public:
 	Sprite* GetIsoCube(unsigned row, unsigned col) {
 		assert(row + col - 1 >= 0);
 		return sprites[row + col - 1];
+	}
+
+	AnimationFilm* GetFilm() {
+		AnimationFilm* film = AnimationFilmHolder::Get().GetFilm("cubes");
+		if (film == nullptr) {
+			SDL_Rect rect;
+			vector<SDL_Rect> boxes;
+			for (int i = 0; i < 193; i += 32) {
+				for (int j = 0; j < 64; j += 32) {
+					rect.x = j;
+					rect.y = i;
+					rect.h = 32;
+					rect.w = 32;
+					boxes.push_back(rect);
+				}
+			}
+			string id = "cubes";
+			AnimationFilmHolder::Get().Load(id, "Sprites/cubes.bmp", boxes);
+			film = AnimationFilmHolder::Get().GetFilm("cubes");
+			return film;
+		}
 	}
 
 	IsometricPyramid(unsigned Px, unsigned Py, unsigned totalRows, unsigned h1, unsigned h2) {

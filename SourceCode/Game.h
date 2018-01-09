@@ -2,7 +2,6 @@
 #define __GAME_H__
 #include <iostream>
 #include <SDL.h>
-//#include "GameObject.cpp"
 
 class Game {
 public:
@@ -12,7 +11,7 @@ public:
 	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
 	void render();
 	void update() {}
-	void handleEvents();
+	void handleEvents(int row, int col);
 	void clean();
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }

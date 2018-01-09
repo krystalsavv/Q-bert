@@ -264,6 +264,7 @@ public:
 		Sprite(id, film, x, y, w, h, zorder) {
 		this->row = row;
 		this->col = col;
+		SetFrame(4);
 	}
 	CubeSprite(char* id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder, unsigned  row, unsigned col) :
 		Sprite(id, film, x, y, w, h, zorder) {

@@ -43,7 +43,7 @@ void Game::render() {
 	SDL_RenderPresent(m_pRenderer); 
 }
 
-void Game::handleEvents() {
+void Game::handleEvents(int row, int col) {
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -59,10 +59,10 @@ void Game::handleEvents() {
 				cout << "Right arrow pressed" << endl;
 			}
 			else if (event.key.keysym.sym == SDLK_LEFT) {
-				cout << "Left` arrow pressed" << endl;
+				cout << "Left arrow pressed" << endl;
 			}
 			break;
-			
+
 		case SDL_QUIT:
 			m_bRunning = false;
 			break;
