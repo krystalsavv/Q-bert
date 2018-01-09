@@ -1,11 +1,14 @@
 #include "Game.h"
 #include "Sprites.h"
 #include "Terrain.h"
+#include "Qbert.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
 	m_pRenderer = nullptr;
 	m_bRunning = true;
+	//terrain = new IsometricPyramid(400, 80, 7, 26, 74);
+	//qbert = new Qbert(375, 56);
 }
 
 Game::~Game(){}
@@ -43,7 +46,7 @@ void Game::render() {
 	SDL_RenderPresent(m_pRenderer); 
 }
 
-void Game::handleEvents(int row, int col) {
+void Game::handleEvents() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -82,6 +85,12 @@ void Game::clean() {
 
 SDL_Renderer* Game::GetRenderer() {
 	return m_pRenderer;
+}
+
+
+void Game::SetSprite(IsometricPyramid *terrain, Qbert *qbert) {
+	this->terrain = terrain;
+	this->qbert = qbert;
 }
 
 

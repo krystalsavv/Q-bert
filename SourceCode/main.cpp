@@ -20,8 +20,11 @@ int main(int argc, char* args[]) {
 	IsometricPyramid *terrain = new IsometricPyramid(400, 80, 7, 26,74);
 	Qbert *qbert = new Qbert(375,56);
 
+	game->SetSprite(terrain, qbert);
+
+
 	while (game->running()) {
-		game->handleEvents(qbert->GetCurrRow(), qbert->GetCurrCol());
+		game->handleEvents();
 		game->update();
 		game->render();
 	}

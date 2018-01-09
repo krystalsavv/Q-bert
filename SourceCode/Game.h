@@ -3,7 +3,12 @@
 #include <iostream>
 #include <SDL.h>
 
+class Qbert;
+class IsometricPyramid;
+
 class Game {
+	IsometricPyramid *terrain;
+	Qbert *qbert;
 public:
 	Game();
 	~Game();
@@ -11,8 +16,9 @@ public:
 	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
 	void render();
 	void update() {}
-	void handleEvents(int row, int col);
+	void handleEvents();
 	void clean();
+	void SetSprite(IsometricPyramid *terrain, Qbert *qbert);
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();
