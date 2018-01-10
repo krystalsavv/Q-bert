@@ -146,6 +146,12 @@ public:
 	void SetZOrder(unsigned zOrder) {
 		this->zOrder = zOrder;
 	}
+	void SetX(int x) {
+		destinationRect.x = x;
+	}
+	void SetY(int y) {
+		destinationRect.y = y;
+	}
 
 	unsigned GetFrame(void) const {
 		return frameNo;
@@ -167,6 +173,13 @@ public:
 	}
 	bool IsVisible(void) const {
 		return isVisible;
+	}
+
+	virtual void Move(int dx,int dy) {
+		assert(destinationRect.x + dx >= 0);
+		assert(destinationRect.y + dy >= 0);
+		destinationRect.x += dx;
+		destinationRect.y += dy;
 	}
 
 	//virtual bool CollisionCheck(Sprite* s); // TO DO!!!

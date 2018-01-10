@@ -2,13 +2,12 @@
 #include "Sprites.h"
 #include "Terrain.h"
 #include "Qbert.h"
+#include "Animation.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
 	m_pRenderer = nullptr;
 	m_bRunning = true;
-	//terrain = new IsometricPyramid(400, 80, 7, 26, 74);
-	//qbert = new Qbert(375, 56);
 }
 
 Game::~Game(){}
@@ -44,6 +43,11 @@ void Game::render() {
 	SDL_RenderClear(m_pRenderer);
 	spriteList.Display();
 	SDL_RenderPresent(m_pRenderer); 
+}
+
+
+void Game::update() {
+	AnimatorHolder::Progress(currTime);
 }
 
 void Game::handleEvents() {
@@ -93,10 +97,32 @@ void Game::SetSprite(IsometricPyramid *terrain, Qbert *qbert) {
 	this->qbert = qbert;
 }
 
+void Game::SetGameTime() {
+	currTime = time(0);
+}
+time_t Game::GetGameTime() {
+	return currTime;
+}
+
 
 
 //gia thn SpriteList (einai ligo akyrh edw alla den exw allo cpp arxeio na thn balw)
 //sort apo to mikrotero zOrder sto megalytero
 bool compare(Sprite* s1, Sprite* s2) {
 	return s1->GetzOrder() < s2->GetzOrder();
+}
+
+
+// Logo thematos xrhshs twn synarthsewn ston Animator
+void AnimatorHolder_Register(Animator* a) {
+	AnimatorHolder::Register(a);
+}
+void AnimatorHolder_Cancel(Animator* a) {
+	AnimatorHolder::Cancel(a);
+}
+void AnimatorHolder_MarkAsRunning(Animator* a) {
+	AnimatorHolder::MarkAsRunning(a);
+}
+void AnimatorHolder_MarkAsSuspended(Animator* a) {
+	AnimatorHolder::MarkAsSuspended(a);
 }

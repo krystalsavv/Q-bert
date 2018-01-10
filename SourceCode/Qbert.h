@@ -1,6 +1,7 @@
 #ifndef _QBERT_
 #define _QBERT_ 
 #include "Sprites.h"
+#include "Animation.h"
 
 //the Qbert's position for cube with center (xc,yc) is xc-25,yc-50
 
@@ -20,6 +21,12 @@ public:
 	}
 	void SetFrame(unsigned FrameNo) {
 		sprite->SetFrame(FrameNo);
+	}
+	void SetX(int x) {
+		sprite->SetX(x);
+	}
+	void SetY(int y) {
+		sprite->SetY(y);
 	}
 	int GetCurrRow() {
 		return currRow;
@@ -43,8 +50,21 @@ public:
 			string id = "Qbert";
 			AnimationFilmHolder::Get().Load(id, "Sprites/QbertFilm.bmp", boxes);
 			film = AnimationFilmHolder::Get().GetFilm("Qbert");
-			return film;
 		}
+		return film;
+	}
+
+	void Animation() {   //!!!!!!!! gia test einai ayth h method
+		std::list<PathEntry> path;
+		PathEntry *p;
+		for (int i = 0; i < 4; ++i) {
+			p = new PathEntry(-10, 0, i, 1);
+			path.push_back(*p); // oxi polu kalo pou einai pointer alla einai demo
+		}
+
+		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");  
+		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
+		qbertAnimator->Start(game->GetGameTime());
 	}
 
 	Qbert(int x, int y){
@@ -53,7 +73,5 @@ public:
 		currCol = 1;
 	}
 };
-
-
 
 #endif

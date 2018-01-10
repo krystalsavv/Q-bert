@@ -96,8 +96,8 @@ public:
 			string id = "cubes";
 			AnimationFilmHolder::Get().Load(id, "Sprites/cubes.bmp", boxes);
 			film = AnimationFilmHolder::Get().GetFilm("cubes");
-			return film;
 		}
+		return film;
 	}
 
 	IsometricPyramid(unsigned Px, unsigned Py, unsigned totalRows, unsigned h1, unsigned h2) {
