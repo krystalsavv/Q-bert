@@ -28,11 +28,41 @@ public:
 	void SetY(int y) {
 		sprite->SetY(y);
 	}
+
 	int GetCurrRow() {
 		return currRow;
 	}
 	int GetCurrCol() {
 		return currCol;
+	}
+
+	void moveRight() {
+		currCol++;
+	}
+	void moveLeft() {
+		currCol--;
+	}
+	void moveDownRight() {
+		currRow++;
+		currCol++;
+	}
+	void moveDownLeft() {
+		currRow++;
+		sprite->SetX(&sprite->GetX - 30);
+		sprite->SetY(&sprite->GetY + 30);
+		
+	}
+	void moveUpRight() {
+		currRow--;
+
+	}
+	void moveUpLeft() {
+		currRow--;
+		currCol--;
+	}
+
+	void PrintPos() {
+		cout << "ROW " << currRow << " COLL " << currCol << endl;
 	}
 
 	AnimationFilm* GetFilm() {

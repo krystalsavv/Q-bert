@@ -58,15 +58,58 @@ void Game::handleEvents() {
 			if (event.key.keysym.sym == SDLK_UP)
 			{
 				cout << "Up arrow pressed" << endl;
+				if (qbert->GetCurrRow() == qbert->GetCurrCol()) {
+
+					//check for disk and then new event
+					//OR
+					//Here we lose
+					cout << "END OF GAME " << endl;
+				}
+				else if (qbert->GetCurrCol() == 1) {
+					qbert->moveUpLeft();
+					cout << "Position changed to : ";
+					qbert->PrintPos();
+				}
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
 				cout << "Down arrow pressed" << endl;
+				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
+					//we lose
+					cout << "END OF GAME" << endl;
+				}
+				else {
+					qbert->moveDownLeft();
+					cout << "Position changed to : ";
+					qbert->PrintPos();
+					
+				}
+
 			}
 			else if (event.key.keysym.sym == SDLK_RIGHT) {
 				cout << "Right arrow pressed" << endl;
+				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
+					//we lose
+					cout << "END OF GAME" << endl;
+				}
+				else {
+					qbert->moveDownRight();
+					cout << "Position changed to : ";
+					qbert->PrintPos();
+				}
+
 			}
 			else if (event.key.keysym.sym == SDLK_LEFT) {
 				cout << "Left arrow pressed" << endl;
+				if (qbert->GetCurrCol() == 1) {
+					//we lose
+					cout << "END OF GAME" << endl;
+				}
+				else {
+					qbert->moveDownLeft();
+					cout << "Position changed to : ";
+					qbert->PrintPos();
+
+				}
 			}
 			break;
 

@@ -67,7 +67,9 @@ public:
 	unsigned GetTotalHeight(void) const {
 		return totalRows * h2 + h1;
 	}
-
+	unsigned int GetTotalRows() {
+		return totalRows;
+	}
 	void SetZOrder(unsigned zOrder) {  // check an ta allazei kai sthn list
 		for (auto i = sprites.begin(); i != sprites.end(); ++i) {
 			(*i)->SetZOrder(zOrder);

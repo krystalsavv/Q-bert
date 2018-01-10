@@ -152,6 +152,12 @@ public:
 	void SetY(int y) {
 		destinationRect.y = y;
 	}
+	int GetX() {
+		return destinationRect.x;
+	}
+	int GetY() {
+		return destinationRect.y;
+	}
 
 	unsigned GetFrame(void) const {
 		return frameNo;
