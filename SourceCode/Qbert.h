@@ -12,7 +12,7 @@ class Qbert {
 public:
 	void Create(int x, int y) {
 		AnimationFilm* film = GetFilm();
-		sprite = new Sprite("Qbert",film,x, y, 50, 50, 20);
+		sprite = new Sprite("Qbert",film,x, y, 50, 50, 20); //48,48
 		spriteList.Insert(sprite);		
 	}
 
@@ -21,12 +21,6 @@ public:
 	}
 	void SetFrame(unsigned FrameNo) {
 		sprite->SetFrame(FrameNo);
-	}
-	void SetX(int x) {
-		sprite->SetX(x);
-	}
-	void SetY(int y) {
-		sprite->SetY(y);
 	}
 
 	int GetCurrRow() {
@@ -86,18 +80,18 @@ public:
 		return film;
 	}
 
-	/*void Animation() {   //!!!!!!!! gia test einai ayth h method
+	void Animation() {   //!!!!!!!! gia test einai ayth h method
 		std::list<PathEntry> path;
 		PathEntry *p;
 		for (int i = 0; i < 4; ++i) {
-			p = new PathEntry(-10, 0, i, 1);
+			p = new PathEntry(-10, 0, i, 300);
 			path.push_back(*p); // oxi polu kalo pou einai pointer alla einai demo
 		}
 
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");  
 		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
 		qbertAnimator->Start(game->GetGameTime());
-	}*/
+	}
 
 	Qbert(int x, int y){
 		Create(x,y);

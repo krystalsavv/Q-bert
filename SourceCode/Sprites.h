@@ -124,11 +124,11 @@ public:
 
 
 class Sprite {
+	string id;
 	unsigned frameNo; // se pio frame ftanw apo to Animation film
 	SDL_Rect destinationRect;
 	SDL_Rect sourceRect; // framebox
 	AnimationFilm *currFilm;
-	string id;
 	unsigned zOrder;
 	bool isVisible;
 
@@ -152,13 +152,6 @@ public:
 	void SetY(int y) {
 		destinationRect.y = y;
 	}
-	int GetX() {
-		return destinationRect.x;
-	}
-	int GetY() {
-		return destinationRect.y;
-	}
-
 	unsigned GetFrame(void) const {
 		return frameNo;
 	}
@@ -225,7 +218,7 @@ public:
 	}
 };
 
-
+//gia spritelist
 bool compare(Sprite* s1, Sprite* s2);
 
 class SpriteList  final  { 

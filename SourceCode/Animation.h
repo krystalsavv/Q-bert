@@ -94,7 +94,7 @@ class Animator {
 public:
 	typedef void(*FinishCallback)(Animator*, void*);
 protected:
-	time_t lastTime; // unsigned long savidis
+	unsigned long lastTime; // unsigned long savidis
 	animatorstate_t state;
 	FinishCallback onFinish;
 	void* finishClosure;
@@ -115,11 +115,11 @@ public:
 		return state != ANIMATOR_RUNNING;
 	}
 
-	virtual void TimeShift(time_t offset) {
+	virtual void TimeShift(unsigned long offset) {
 		lastTime += offset;
 	}
 
-	virtual void Progress(time_t currTime) = 0;
+	virtual void Progress(unsigned long currTime) = 0;
 
 	void SetOnFinish(FinishCallback f, void* c = nullptr){
 		onFinish = f, finishClosure = c;
@@ -140,7 +140,7 @@ class MovingPathAnimator : public Animator {
 	MovingPathAnimation* anim;
 	PathEntry *currPathFrame; 
 public:
-	void Progress(time_t currTime) {
+	void Progress(unsigned long currTime) {
 		assert(currPathFrame);
 		assert(anim);
 		assert(sprite);
@@ -160,7 +160,7 @@ public:
 		}
 	}
 
-	void Start(Sprite* s, MovingPathAnimation* a, time_t t) {
+	void Start(Sprite* s, MovingPathAnimation* a, unsigned long t) {
 		assert(s);
 		assert(a);
 		sprite = s;
@@ -172,7 +172,7 @@ public:
 		AnimatorHolder_MarkAsRunning(this);
 	}
 
-	void Start(time_t t) {
+	void Start(unsigned long t) {
 		assert(sprite);
 		assert(anim);
 		lastTime = t;
@@ -227,7 +227,7 @@ public:
 		suspended.push_back(a);
 	}
 
-	static void Progress(time_t currTime) {
+	static void Progress(unsigned long currTime) {
 		auto i = running.begin();
 		while (!running.empty() && i != running.end()) {
 			(*i)->Progress(currTime);

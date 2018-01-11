@@ -139,15 +139,17 @@ SDL_Renderer* Game::GetRenderer() {
 }
 
 
-void Game::SetSprite(IsometricPyramid *terrain, Qbert *qbert) {
+void Game::SetSprite(IsometricPyramid *terrain,Qbert *qbert,Disk *diskLeft,Disk *diskRight) {
 	this->terrain = terrain;
 	this->qbert = qbert;
+	this->diskLeft = diskLeft;
+	this->diskRight = diskRight;
 }
 
 void Game::SetGameTime() {
-	currTime = time(0);
+	currTime = time(0) * 1000; //ms
 }
-time_t Game::GetGameTime() {
+unsigned long Game::GetGameTime() {
 	return currTime;
 }
 
