@@ -65,8 +65,8 @@ void Game::handleEvents() {
 					//Here we lose
 					cout << "END OF GAME " << endl;
 				}
-				else if (qbert->GetCurrCol() == 1) {
-					qbert->moveUpLeft();
+				else{
+					qbert->moveUpRight();
 					cout << "Position changed to : ";
 					qbert->PrintPos();
 				}
@@ -101,11 +101,15 @@ void Game::handleEvents() {
 			else if (event.key.keysym.sym == SDLK_LEFT) {
 				cout << "Left arrow pressed" << endl;
 				if (qbert->GetCurrCol() == 1) {
-					//we lose
-					cout << "END OF GAME" << endl;
+				
+						//we lose
+						cout << "END OF GAME" << endl;
+						//or we take disk
+					
+			
 				}
 				else {
-					qbert->moveDownLeft();
+					qbert->moveUpLeft();
 					cout << "Position changed to : ";
 					qbert->PrintPos();
 

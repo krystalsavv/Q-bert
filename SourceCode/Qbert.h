@@ -45,20 +45,22 @@ public:
 	void moveDownRight() {
 		currRow++;
 		currCol++;
+		sprite->Move(50, 75);
 	}
 	void moveDownLeft() {
 		currRow++;
-		sprite->SetX(&sprite->GetX - 30);
-		sprite->SetY(&sprite->GetY + 30);
+		sprite->Move(-50, 75);
 		
 	}
 	void moveUpRight() {
 		currRow--;
+		sprite->Move(50, -75);
 
 	}
 	void moveUpLeft() {
 		currRow--;
 		currCol--;
+		sprite->Move(-50, -75);
 	}
 
 	void PrintPos() {
@@ -84,7 +86,7 @@ public:
 		return film;
 	}
 
-	void Animation() {   //!!!!!!!! gia test einai ayth h method
+	/*void Animation() {   //!!!!!!!! gia test einai ayth h method
 		std::list<PathEntry> path;
 		PathEntry *p;
 		for (int i = 0; i < 4; ++i) {
@@ -95,7 +97,7 @@ public:
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");  
 		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
 		qbertAnimator->Start(game->GetGameTime());
-	}
+	}*/
 
 	Qbert(int x, int y){
 		Create(x,y);
