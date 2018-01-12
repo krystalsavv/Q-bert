@@ -67,6 +67,7 @@ public:
 				flag = 1;
 		}
 		return nullptr;
+		//return &(path.back());
 	}
 
 	Animation* Clone(string newId) const{
@@ -75,11 +76,13 @@ public:
 	Animation* Clone(char * newId) const {
 		return new MovingPathAnimation(path, newId);
 	}
-	MovingPathAnimation(const std::list<PathEntry>& _path, char * id) :
-		path(_path), Animation(id) {}
+	MovingPathAnimation(const std::list<PathEntry>& path, char * id) : Animation(id) {
+		this->path.assign(path.begin(), path.end());
+	}
 
-	MovingPathAnimation(const std::list<PathEntry>& _path, string id) :
-		path(_path), Animation(id) {}
+	MovingPathAnimation(const std::list<PathEntry>& path, string id) : Animation(id) {
+		this->path.assign(path.begin(), path.end());
+	}
 };
 
 
@@ -119,7 +122,7 @@ public:
 		lastTime += offset;
 	}
 
-	virtual void Progress(unsigned long currTime) = 0;
+	virtual bool Progress(unsigned long currTime) = 0;
 
 	void SetOnFinish(FinishCallback f, void* c = nullptr){
 		onFinish = f, finishClosure = c;
@@ -140,7 +143,7 @@ class MovingPathAnimator : public Animator {
 	MovingPathAnimation* anim;
 	PathEntry *currPathFrame; 
 public:
-	void Progress(unsigned long currTime) {
+	bool Progress(unsigned long currTime) {
 		assert(currPathFrame);
 		assert(anim);
 		assert(sprite);
@@ -152,12 +155,14 @@ public:
 			lastTime += currPathFrame->delay;
 
 			if (currPathFrame == anim->GetEndPathFrame()) {
+				cout << "finishhhhh" << endl;
 				state = ANIMATOR_FINISHED;
-				AnimatorHolder_MarkAsSuspended(this);
+				//AnimatorHolder_MarkAsSuspended(this);
 				NotifyStopped();
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	void Start(Sprite* s, MovingPathAnimation* a, unsigned long t) {
@@ -230,8 +235,11 @@ public:
 	static void Progress(unsigned long currTime) {
 		auto i = running.begin();
 		while (!running.empty() && i != running.end()) {
-			(*i)->Progress(currTime);
-			if (!running.empty()) ++i;
+			bool remove = (*i)->Progress(currTime);
+			auto prev = i;
+			++i;
+			if (remove)
+				MarkAsSuspended(*prev);
 		}
 	}
 };
