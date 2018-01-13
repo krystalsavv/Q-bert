@@ -3,6 +3,7 @@
 #include "Terrain.h"
 #include "Qbert.h"
 #include "Animation.h"
+#include "AI.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
@@ -47,6 +48,7 @@ void Game::render() {
 
 
 void Game::update() {
+	ai->logic(GetGameTime());
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -139,20 +141,24 @@ SDL_Renderer* Game::GetRenderer() {
 }
 
 
-void Game::SetSprite(IsometricPyramid *terrain,Qbert *qbert,Disk *diskLeft,Disk *diskRight) {
+void Game::SetSprite(IsometricPyramid *terrain,Qbert *qbert,Disk *diskLeft,Disk *diskRight, AI *ai) {
 	this->terrain = terrain;
 	this->qbert = qbert;
 	this->diskLeft = diskLeft;
 	this->diskRight = diskRight;
+	this->ai = ai;
 }
 
 void Game::SetGameTime() {
-	currTime = time(0) * 1000; //ms
+	currTime = SDL_GetTicks(); //ms
 }
 unsigned long Game::GetGameTime() {
 	return currTime;
 }
 
+AI* Game::GetAI() {
+	return ai;
+}
 
 
 //gia thn SpriteList (einai ligo akyrh edw alla den exw allo cpp arxeio na thn balw)

@@ -12,8 +12,8 @@ class Qbert {
 public:
 	void Create(int x, int y) {
 		AnimationFilm* film = GetFilm();
-		sprite = new Sprite("Qbert",film,x, y, 50, 50, 20); //48,48
-		spriteList.Insert(sprite);		
+		sprite = new Sprite("Qbert", film, x, y, 50, 50, 20); //48,48
+		spriteList.Insert(sprite);
 	}
 
 	void SetZOrder(unsigned zOrder) {  // check an ta allazei kai sthn list
@@ -44,7 +44,7 @@ public:
 	void moveDownLeft() {
 		currRow++;
 		sprite->Move(-50, 75);
-		
+
 	}
 	void moveUpRight() {
 		currRow--;
@@ -88,13 +88,13 @@ public:
 			path.push_back(*p); // oxi polu kalo pou einai pointer alla einai demo
 		}
 
-		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");  
+		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
 		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
 		qbertAnimator->Start(game->GetGameTime());
 	}
 
-	Qbert(int x, int y){
-		Create(x,y);
+	Qbert(int x, int y) {
+		Create(x, y);
 		currRow = 1;
 		currCol = 1;
 	}

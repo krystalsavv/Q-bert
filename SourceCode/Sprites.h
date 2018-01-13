@@ -223,8 +223,6 @@ bool compare(Sprite* s1, Sprite* s2);
 
 class SpriteList  final  { 
 	list<Sprite *> list;
-
-	
 public:
 
 	

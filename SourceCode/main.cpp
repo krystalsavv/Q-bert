@@ -5,6 +5,8 @@
 #include "Qbert.h"
 #include "Animation.h"
 #include "Disk.h"
+#include "Ball.h"
+#include "AI.h"
 
 //global
 Game* game = nullptr;
@@ -18,20 +20,22 @@ list<Animator*> AnimatorHolder::suspended;
 
 int Disk::lala = 0;
 
+int AI::sum = 0;
+
+
 int main(int argc, char* args[]) {
 	game = new Game();
 	game->init("Q*bert", 200, 40, 800, 700, 0);
 
 	IsometricPyramid *terrain = new IsometricPyramid(400, 80, 7, 26,74);
 	Qbert *qbert = new Qbert(377,56);
-	Disk *diskLeft = new Disk("DiskLeft", 70, 350);			// ftiaxnw ta 2 disk sthn othonh (tsekare thn Disk::Create())
+	Disk *diskLeft = new Disk("DiskLeft", 70, 350);
 	Disk *diskRight = new Disk("DiskRight", 680, 350);
-
-
-	game->SetSprite(terrain, qbert, diskLeft, diskRight);	//me aythn thn synarthsh ta krataw sto game object
+	
 	game->SetGameTime();  // arxhkopoiw to game->currTime (den einai swsto ekei kai prepei na fygei apla to xrhsimopoiw gia na dwkomasw to Qbert::Animation())
-	qbert->Animation();
 
+	AI* ai = new AI(game->GetGameTime());
+	game->SetSprite(terrain, qbert, diskLeft, diskRight, ai);
 	while (game->running()) {
 		game->SetGameTime();
 		game->handleEvents();

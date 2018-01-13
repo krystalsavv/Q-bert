@@ -9,6 +9,7 @@ using namespace std;
 class Qbert;
 class IsometricPyramid;
 class Disk;
+class AI;
 
 class Game {
 	unsigned long currTime = 0;
@@ -16,6 +17,7 @@ class Game {
 	Qbert *qbert;
 	Disk *diskLeft;
 	Disk *diskRight;
+	AI *ai;
 public:
 	Game();
 	~Game();
@@ -28,9 +30,11 @@ public:
 	void SetSprite(	IsometricPyramid *terrain,
 					Qbert *qbert,
 					Disk *diskLeft,
-					Disk *diskRight);
+					Disk *diskRight,
+					AI *ai);
 	void SetGameTime();
 	unsigned long GetGameTime();
+	AI* GetAI();
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();

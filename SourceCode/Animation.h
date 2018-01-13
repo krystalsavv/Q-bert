@@ -90,14 +90,15 @@ public:
 enum animatorstate_t {
 	ANIMATOR_FINISHED = 0,
 	ANIMATOR_RUNNING = 1,
-	ANIMATOR_STOPPED = 2
+	ANIMATOR_STOPPED = 2,
+	ANIMATOR_READY = 3
 };
 
 class Animator {
 public:
 	typedef void(*FinishCallback)(Animator*, void*);
 protected:
-	unsigned long lastTime; // unsigned long savidis
+	unsigned long lastTime; 
 	animatorstate_t state;
 	FinishCallback onFinish;
 	void* finishClosure;
@@ -106,6 +107,13 @@ protected:
 			(*onFinish)(this, finishClosure);
 	}
 public:
+	void SetState(animatorstate_t s) {
+		state = s;
+	}
+	animatorstate_t GetState() {
+		return state;
+	}
+
 	void Stop(void) {
 		if (!HasFinished()) {
 			state = ANIMATOR_STOPPED;
@@ -130,7 +138,7 @@ public:
 
 	Animator() {
 		lastTime = 0;
-		state = ANIMATOR_FINISHED;
+		state = ANIMATOR_READY;
 		SetOnFinish(nullptr,nullptr);
 	}
 	virtual ~Animator() {};
@@ -157,7 +165,6 @@ public:
 			if (currPathFrame == anim->GetEndPathFrame()) {
 				cout << "finishhhhh" << endl;
 				state = ANIMATOR_FINISHED;
-				//AnimatorHolder_MarkAsSuspended(this);
 				NotifyStopped();
 				return true;
 			}
@@ -238,8 +245,9 @@ public:
 			bool remove = (*i)->Progress(currTime);
 			auto prev = i;
 			++i;
-			if (remove)
+			if (remove) {
 				MarkAsSuspended(*prev);
+			}
 		}
 	}
 };
