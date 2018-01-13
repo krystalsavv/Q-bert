@@ -80,7 +80,7 @@ public:
 					path.push_back(*p);
 				}
 				MovingPathAnimation* BallAnimation = new MovingPathAnimation(path, "Ball" + to_string(sum));
-				MovingPathAnimator* BallAnimator = new MovingPathAnimator(ball->GetSprite(), BallAnimation);
+				MovingPathAnimator* BallAnimator = new MovingPathAnimator(ball->GetSprite(), BallAnimation,false);
 				ballAnim = new BallAnim(ball, BallAnimation, BallAnimator);
 				Balls.push_back(ballAnim);
 			}

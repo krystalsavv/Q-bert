@@ -176,6 +176,7 @@ public:
 
 	virtual void Move(int dx,int dy) {
 		assert(destinationRect.x + dx >= 0);
+
 		assert(destinationRect.y + dy >= 0);
 		destinationRect.x += dx;
 		destinationRect.y += dy;

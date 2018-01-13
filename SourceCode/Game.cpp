@@ -4,6 +4,7 @@
 #include "Qbert.h"
 #include "Animation.h"
 #include "AI.h"
+#include "Disk.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
@@ -49,11 +50,19 @@ void Game::render() {
 
 void Game::update() {
 	ai->logic(GetGameTime());
+//	diskLeft->Spin();
+//	diskRight->Spin();
 	AnimatorHolder::Progress(currTime);
+	
+	
 }
 
 void Game::handleEvents() {
+	
+
+	
 	SDL_Event event;
+	
 	if (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_KEYDOWN:
@@ -65,6 +74,11 @@ void Game::handleEvents() {
 					//check for disk and then new event
 					//OR
 					//Here we lose
+					if (qbert->GetCurrRow() == 5) {
+						diskRight->MoveUpRight();
+						qbert->MoveUpDiskRight();
+						qbert->Restore();
+					}
 					cout << "END OF GAME " << endl;
 				}
 				else{
@@ -92,6 +106,7 @@ void Game::handleEvents() {
 				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
 					//we lose
 					cout << "END OF GAME" << endl;
+					
 				}
 				else {
 					qbert->moveDownRight();
@@ -107,6 +122,12 @@ void Game::handleEvents() {
 						//we lose
 						cout << "END OF GAME" << endl;
 						//or we take disk
+						if (qbert->GetCurrRow() == 5) {
+							qbert->MoveUpDiskLeft();
+							
+							diskLeft->MoveUpLeft();
+							qbert->Restore();
+						}
 					
 			
 				}
@@ -126,6 +147,7 @@ void Game::handleEvents() {
 			break;
 		}
 	}
+
 }
 
 

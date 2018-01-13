@@ -33,7 +33,8 @@ int main(int argc, char* args[]) {
 	Disk *diskRight = new Disk("DiskRight", 680, 350);
 	
 	game->SetGameTime();  // arxhkopoiw to game->currTime (den einai swsto ekei kai prepei na fygei apla to xrhsimopoiw gia na dwkomasw to Qbert::Animation())
-
+	diskLeft->Spin();
+	diskRight->Spin();
 	AI* ai = new AI(game->GetGameTime());
 	game->SetSprite(terrain, qbert, diskLeft, diskRight, ai);
 	while (game->running()) {

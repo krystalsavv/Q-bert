@@ -17,6 +17,10 @@ public:
 		spriteList.Insert(sprite);
 	}
 
+	void Restore() {
+		currCol = 1;
+		currRow = 1;
+	}
 	void SetZOrder(unsigned zOrder) {  // check an ta allazei kai sthn list
 		sprite->SetZOrder(zOrder);
 	}
@@ -56,7 +60,7 @@ public:
 		path.push_back(*p3);
 
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
-		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
+		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation,false);
 		qbertAnimator->Start(game->GetGameTime());
 
 		path.clear();
@@ -84,7 +88,7 @@ public:
 		path.push_back(*p3);
 
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
-		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
+		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation,false);
 		qbertAnimator->Start(game->GetGameTime());
 
 		path.clear();
@@ -109,7 +113,7 @@ public:
 		path.push_back(*p3);
 
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
-		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
+		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation,false);
 		qbertAnimator->Start(game->GetGameTime());
 
 		path.clear();
@@ -134,7 +138,7 @@ public:
 		path.push_back(*p3);
 
 		MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
-		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation);
+		MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprite, qbertAnimation,false);
 		qbertAnimator->Start(game->GetGameTime());
 
 		path.clear();
@@ -166,7 +170,92 @@ public:
 		}
 		return film;
 	}
+	void MoveUpDiskLeft() {
+		
+		PathEntry *p_1 = new PathEntry(0, 0, 0, 70);
 
+		PathEntry *p_2 = new PathEntry(0, -30, 1, 70);
+		PathEntry *p_3 = new PathEntry(-10, -30, 1, 70);
+		PathEntry *p_4 = new PathEntry(-20, 0, 1, 70);
+
+		PathEntry *p_5 = new PathEntry(-30, 0, 0, 70);
+		PathEntry *p_6 = new PathEntry(-30, 60, 0, 70);
+		path.push_back(*p_1);
+		path.push_back(*p_2);
+		path.push_back(*p_3);
+		path.push_back(*p_4);
+		path.push_back(*p_5);
+		path.push_back(*p_6);
+		
+
+		PathEntry *p1 = new PathEntry(20, -20, 0, 100);
+		PathEntry *p2 = new PathEntry(20, -20, 1, 100);
+		PathEntry *p3 = new PathEntry(20, -20, 2, 100);
+		PathEntry *p4 = new PathEntry(20, -20, 3, 100);
+		PathEntry *p5 = new PathEntry(20, -20, 0, 100);
+		for (int i = 0; i < 3; i++) {
+			path.push_back(*p2);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+		}
+		PathEntry *p6 = new PathEntry(0, 0, 4, 150);
+		path.push_back(*p6);
+
+
+		MovingPathAnimation* diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator* diskAnimator = new MovingPathAnimator(sprite, diskAnimation,false);
+		diskAnimator->Start(game->GetGameTime());
+
+		path.clear();
+		path.push_back(*p_1);
+		
+	}
+
+	void MoveUpDiskRight() {
+		
+
+		PathEntry *p_1 = new PathEntry(0, 0, 0, 70);
+
+		PathEntry *p_2 = new PathEntry(0, -30, 1, 70);
+		PathEntry *p_3 = new PathEntry(10, -30, 1, 70);
+		PathEntry *p_4 = new PathEntry(20, 0, 1, 70);
+
+		PathEntry *p_5 = new PathEntry(30, 0, 0, 70);
+		PathEntry *p_6 = new PathEntry(30, 60, 0, 70);
+		path.push_back(*p_1);
+		path.push_back(*p_2);
+		path.push_back(*p_3);
+		path.push_back(*p_4);
+		path.push_back(*p_5);
+		path.push_back(*p_6);
+
+
+		PathEntry *p1 = new PathEntry(-20, -20, 0, 100);
+		PathEntry *p2 = new PathEntry(-20, -20, 1, 100);
+		PathEntry *p3 = new PathEntry(-20, -20, 2, 100);
+		PathEntry *p4 = new PathEntry(-20, -20, 3, 100);
+		PathEntry *p5 = new PathEntry(-20, -20, 0, 100);
+		for (int i = 0; i < 3; i++) {
+			path.push_back(*p2);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+		}
+		PathEntry *p6 = new PathEntry(0, 0, 4, 150);
+		path.push_back(*p6);
+
+
+		MovingPathAnimation* diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator* diskAnimator = new MovingPathAnimator(sprite, diskAnimation, false);
+		diskAnimator->Start(game->GetGameTime());
+
+		path.clear();
+		path.push_back(*p_1);
+
+	}
 	Qbert(int x, int y) {
 		Create(x, y);
 		currRow = 1;

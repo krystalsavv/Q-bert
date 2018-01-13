@@ -7,23 +7,24 @@ class Disk {
 	Sprite *sprite;
 	static int lala;		// den xreiazetai apla gia na emfanizw kai tous 2 typous diskwn (me kai xwris qbert) sto window
 							// to xrhsimopoio apla sthn create alla tha fygei apo ton teliko code 
+	std::list<PathEntry> path;
 
 public:
 	void Create(string id, int x, int y) {
 		AnimationFilm* film;
-		if (lala == 0)
+		//if (lala == 0)
 			film = GetFilm();								// fortonei to film tou aplou diskou 
-		else
-			film = GetFilm_withQbert();						// fortonei to film tou diskou me qbert
+		//else
+			//film = GetFilm_withQbert();						// fortonei to film tou diskou me qbert
 		sprite = new Sprite(id, film, x, y, 47, 47, 15);	// diastaseis gia aplo disko
 		//sprite = new Sprite(id, film, x, y, 66, 66, 15);	// diastaseis gia disko me qbert
 
 		spriteList.Insert(sprite);
 		
-		if(lala==1)
-			SetFrameSize(66, 66);		// allazei tis diastaseis toy sprite aytou sthn othinh (mporei na xreiastei gt exoume aythn thn diafora twn diastasewn)
+		//if(lala==1)
+			//SetFrameSize(66, 66);		// allazei tis diastaseis toy sprite aytou sthn othinh (mporei na xreiastei gt exoume aythn thn diafora twn diastasewn)
 										// edw ta allazw gia na emfanizei komple kai ton disk me qbert
-		++lala;
+		//++lala;
 	}
 
 	//void Destroy(void) {} // normally at level program end
@@ -114,6 +115,82 @@ public:
 		}
 		return film;
 	}
+	void Spin() {
+		
+		PathEntry *p1 = new PathEntry(0, 0, 0,250);
+		PathEntry *p2 = new PathEntry(0, 0, 1, 250);
+		PathEntry *p3 = new PathEntry(0, 0, 2, 250);
+		PathEntry *p4 = new PathEntry(0, 0, 3, 250);
+		for (int i = 0; i < 30; ++i) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+		}
+		MovingPathAnimation* diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator* diskAnimator = new MovingPathAnimator(sprite, diskAnimation,true);
+		diskAnimator->Start(game->GetGameTime());
+
+		path.clear();
+		
+	}
+	void MoveUpLeft() {
+
+		PathEntry *p = new PathEntry(0, 0, 0, 700);
+		path.push_back(*p);
+		PathEntry *p1 = new PathEntry(20, -20, 0, 100);
+		PathEntry *p2 = new PathEntry(20, -20, 1, 100);
+		PathEntry *p3 = new PathEntry(20, -20, 2, 100);
+		PathEntry *p4 = new PathEntry(20, -20, 3, 100);
+		PathEntry *p5 = new PathEntry(20, -20, 4, 100);
+		for (int i = 0; i < 3; i++) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+		}
+		PathEntry *p6 = new PathEntry(25, -45, 4, 150);
+		path.push_back(*p6);
+
+
+		MovingPathAnimation* diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator* diskAnimator = new MovingPathAnimator(sprite, diskAnimation,false);
+		diskAnimator->Start(game->GetGameTime());
+
+		path.clear();
+		
+	}
+
+	void MoveUpRight() {
+
+		PathEntry *p = new PathEntry(0, 0, 0, 500);
+		path.push_back(*p);
+		
+		PathEntry *p1 = new PathEntry(-20, -20, 0, 100);
+		PathEntry *p2 = new PathEntry(-20, -20, 1, 100);
+		PathEntry *p3 = new PathEntry(-20, -20, 2, 100);
+		PathEntry *p4 = new PathEntry(-20, -20, 3, 100);
+		PathEntry *p5 = new PathEntry(-20, -20, 4, 100);
+		for (int i = 0; i < 3; i++) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+		}
+		PathEntry *p6 = new PathEntry(-25, -45, 4, 150);
+		path.push_back(*p6);
+
+
+		MovingPathAnimation* diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator* diskAnimator = new MovingPathAnimator(sprite, diskAnimation,false);
+		diskAnimator->Start(game->GetGameTime());
+
+		path.clear();
+
+	}
+	
 
 	Disk(string id,int x, int y) {
 		Create(id, x, y);
