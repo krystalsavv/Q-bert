@@ -150,7 +150,6 @@ class MovingPathAnimator : public Animator {
 	Sprite*	sprite;
 	MovingPathAnimation* anim;
 	PathEntry *currPathFrame; 
-	bool cont;
 public:
 	bool Progress(unsigned long currTime) {
 		assert(currPathFrame);
@@ -164,14 +163,9 @@ public:
 			lastTime += currPathFrame->delay;
 
 			if (currPathFrame == anim->GetEndPathFrame()) {
-				if (cont) 
-					currPathFrame = anim->GetStartPathFrame();
-				else {
-					//cout << "finishhhhh" << endl;
-					state = ANIMATOR_FINISHED;
-					NotifyStopped();
-					return true;
-				}
+				state = ANIMATOR_FINISHED;
+				NotifyStopped();
+				return true;
 			}
 		}
 		return false;
@@ -206,12 +200,11 @@ public:
 		AnimatorHolder_Register(this); 
 	}
 
-	MovingPathAnimator(Sprite* s, MovingPathAnimation* a, bool cont) {
+	MovingPathAnimator(Sprite* s, MovingPathAnimation* a) {
 		sprite = s;
 		anim = a;
 		currPathFrame = nullptr;
 		AnimatorHolder_Register(this);
-		this->cont = cont;
 	}
 	~MovingPathAnimator() {}
 };

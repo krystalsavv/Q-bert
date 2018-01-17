@@ -13,12 +13,12 @@ class AI;
 
 class Game {
 	unsigned long currTime = 0;
-	IsometricPyramid *terrain;
+public:
+	IsometricPyramid * terrain;
 	Qbert *qbert;
 	Disk *diskLeft;
 	Disk *diskRight;
 	AI *ai;
-public:
 	Game();
 	~Game();
 	// simply set the running variable to true  

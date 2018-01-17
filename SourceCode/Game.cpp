@@ -4,7 +4,6 @@
 #include "Qbert.h"
 #include "Animation.h"
 #include "AI.h"
-#include "Disk.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
@@ -50,91 +49,103 @@ void Game::render() {
 
 void Game::update() {
 	ai->logic(GetGameTime());
-//	diskLeft->Spin();
-//	diskRight->Spin();
+	//qbert->Collision();
+	//spriteList.Collision(qbert->GetSprite());
 	AnimatorHolder::Progress(currTime);
-	
-	
 }
 
 void Game::handleEvents() {
-	
-
-	
 	SDL_Event event;
-	
 	if (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_UP)
 			{
-				cout << "Up arrow pressed" << endl;
+				//cout << "Up arrow pressed" << endl;
 				if (qbert->GetCurrRow() == qbert->GetCurrCol()) {
 
 					//check for disk and then new event
 					//OR
 					//Here we lose
-					if (qbert->GetCurrRow() == 5) {
-						diskRight->MoveUpRight();
-						qbert->MoveUpDiskRight();
-						qbert->Restore();
-					}
 					cout << "END OF GAME " << endl;
+					list<PathEntry> path;
+					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
+					PathEntry *p4 = new PathEntry(0, 0, 1, 0);
+					PathEntry *p5 = new PathEntry(20, -30, 1, 70);
+					PathEntry *p6 = new PathEntry(0, -20, 1, 70);
+					PathEntry *p2 = new PathEntry(40, -5, 0, 50);
+					PathEntry *p3 = new PathEntry(0, 0, 0, 0);
+					path.push_back(*p1);
+					path.push_back(*p4);
+					path.push_back(*p5);
+					path.push_back(*p6);
+					path.push_back(*p2);
+					path.push_back(*p3);
+					PathEntry *p;
+					for (int i = 0; i < 30; ++i) {
+						p = new PathEntry(0, 25, 1, 60);
+						path.push_back(*p);
+					}
+					MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
+					MovingPathAnimator* qbertAnimator = new MovingPathAnimator(qbert->GetSprite(), qbertAnimation);
+					qbert->SetZOrder(5);
+					spriteList.GetList().sort(compare);
+					qbertAnimator->Start(game->GetGameTime());
+					
 				}
 				else{
 					qbert->moveUpRight();
-					cout << "Position changed to : ";
-					qbert->PrintPos();
+				//	cout << "Position changed to : ";
+				//	qbert->PrintPos();
 				}
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
-				cout << "Down arrow pressed" << endl;
+				//cout << "Down arrow pressed" << endl;
 				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
 					//we lose
 					cout << "END OF GAME" << endl;
+					qbert->SetZOrder(5);
+					spriteList.GetList().sort(compare);
 				}
 				else {
 					qbert->moveDownLeft();
-					cout << "Position changed to : ";
-					qbert->PrintPos();
+				//	cout << "Position changed to : ";
+				//	qbert->PrintPos();
 					
 				}
 
 			}
 			else if (event.key.keysym.sym == SDLK_RIGHT) {
-				cout << "Right arrow pressed" << endl;
+				//cout << "Right arrow pressed" << endl;
 				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
 					//we lose
 					cout << "END OF GAME" << endl;
-					
+					qbert->SetZOrder(5);
+					spriteList.GetList().sort(compare);
 				}
 				else {
 					qbert->moveDownRight();
-					cout << "Position changed to : ";
-					qbert->PrintPos();
+				//	cout << "Position changed to : ";
+				//	qbert->PrintPos();
 				}
 
 			}
 			else if (event.key.keysym.sym == SDLK_LEFT) {
-				cout << "Left arrow pressed" << endl;
+				//cout << "Left arrow pressed" << endl;
 				if (qbert->GetCurrCol() == 1) {
 				
 						//we lose
 						cout << "END OF GAME" << endl;
+						qbert->SetZOrder(5);
+						spriteList.GetList().sort(compare);
 						//or we take disk
-						if (qbert->GetCurrRow() == 5) {
-							qbert->MoveUpDiskLeft();
-							
-							diskLeft->MoveUpLeft();
-							qbert->Restore();
-						}
 					
 			
 				}
 				else {
 					qbert->moveUpLeft();
-					cout << "Position changed to : ";
-					qbert->PrintPos();
+				//	cout << "Position changed to : ";
+					//qbert->PrintPos();
 
 				}
 			}
@@ -147,7 +158,6 @@ void Game::handleEvents() {
 			break;
 		}
 	}
-
 }
 
 

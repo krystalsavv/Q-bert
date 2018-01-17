@@ -152,6 +152,10 @@ public:
 	void SetY(int y) {
 		destinationRect.y = y;
 	}
+	void SetFilm(AnimationFilm *film) {
+		currFilm = film;
+	}
+
 	unsigned GetFrame(void) const {
 		return frameNo;
 	}
@@ -176,13 +180,75 @@ public:
 
 	virtual void Move(int dx,int dy) {
 		assert(destinationRect.x + dx >= 0);
-
 		assert(destinationRect.y + dy >= 0);
 		destinationRect.x += dx;
 		destinationRect.y += dy;
 	}
 
-	//virtual bool CollisionCheck(Sprite* s); // TO DO!!!
+	virtual bool CollisionCheck(Sprite* s) {
+		assert(s);
+		int x = destinationRect.x;
+		int y = destinationRect.y;
+		int h = destinationRect.h;
+		int w = destinationRect.w;
+		int sx = s->GetDestinationRect().x;
+		int sy = s->GetDestinationRect().y;
+		int sw = s->GetDestinationRect().w;
+		int sh = s->GetDestinationRect().h;
+		if (x <= sx && sx <= x + w && y <= sy && sy <= y + h)
+		{
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 1 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if	(sx <= x && x <= sx + sw && sy <= y && y <= sy + sh) {
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 2 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if (x <= sx + sw && sx + sw <= x + w && y <= sy + sh && sy + sh <= y + h) {
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 3 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if(sx <= x + w && x + w <= sx + sw && sy <= y + h && y + h <= sy + sh) {
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 4 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+	/*	else if(sx <= x && x <= sx + sw && sy <= y + h && y + h <= sy + sh) {  // apo panw mikros Qbert
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 5 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}*/			
+		else if (sx <= x && sx + sw && sy <= y && y <= sy + sh)	{					// apo katw mikros Qbert
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 6 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if(x <= sx && sx <= x + w && y <= sy + sh && sy + sh <= y + h){			// apo katw mikro sprite
+				if (!strcmp(s->GetId().c_str(), "Snake"))
+					cout << "COLLISION 7 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if (x <= sx && sx <= x + w && y <= sy && sy <= y + h) {					// apo panw mikro sprite 
+			if(!strcmp(s->GetId().c_str(), "Snake"))
+			cout << "COLLISION  8 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		if (x >= sx && x + w <= sx + sw && y >= sy && y + h <= sy + sh) {			// Qbert mesa se sprite
+			if (!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 9 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		else if (sx >= x && sx + sw <= x + w && sy >= y && sy + sh <= y + h) {			// sprite mesa se Qbert
+		//	) {
+			if(!strcmp(s->GetId().c_str(), "Snake"))
+				cout << "COLLISION 10 with " << s->GetId().c_str() << ": " << sx << ", " << sy << "  Qbert: " << x << ", " << y << endl;
+			return true;
+		}
+		return false;
+	}
 
 	virtual void Display(const int x, const int y) {
 		currFilm->DisplayFrame(x, y, sourceRect, destinationRect, frameNo);
@@ -232,6 +298,7 @@ public:
 		list.sort(compare);
 	}
 
+
 	Sprite* Get(string id) {
 		for (auto i = list.begin(); i != list.end(); ++i) {
 			if ((*i)->GetId()== id) {
@@ -240,6 +307,33 @@ public:
 		}
 		return nullptr;
 	}
+
+	void Remove(Sprite* s){
+		for (auto i = list.begin(); i != list.end(); ++i) {
+			if (*i == s) {
+				list.remove(*i);
+				return;
+			}
+		}
+		assert(0);
+	}
+
+	std::list<Sprite *>& GetList() {
+		return list;
+	}
+
+	void Collision(Sprite * s) {
+		for (auto i = list.begin(); i != list.end(); ++i) {
+			//cout << "eeee" << endl;
+			if ((*i) == s) {
+				continue;
+			}
+			else if (s->CollisionCheck(*i)) {
+			//collision
+			}
+		}
+	}
+
 
 	void Display() {
 		for (auto i = list.begin(); i != list.end(); ++i) {
