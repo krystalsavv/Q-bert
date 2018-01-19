@@ -50,7 +50,7 @@ void Game::render() {
 void Game::update() {
 	ai->logic(GetGameTime());
 	//qbert->Collision();
-	//spriteList.Collision(qbert->GetSprite());
+	spriteList.Collision(qbert->GetSprite());
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -61,26 +61,24 @@ void Game::handleEvents() {
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_UP)
 			{
-				//cout << "Up arrow pressed" << endl;
 				if (qbert->GetCurrRow() == qbert->GetCurrCol()) {
-
 					//check for disk and then new event
 					//OR
 					//Here we lose
 					cout << "END OF GAME " << endl;
 					list<PathEntry> path;
 					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
-					PathEntry *p4 = new PathEntry(0, 0, 1, 0);
-					PathEntry *p5 = new PathEntry(20, -30, 1, 70);
-					PathEntry *p6 = new PathEntry(0, -20, 1, 70);
-					PathEntry *p2 = new PathEntry(40, -5, 0, 50);
-					PathEntry *p3 = new PathEntry(0, 0, 0, 0);
+					PathEntry *p2 = new PathEntry(0, 0, 1, 0);
+					PathEntry *p3 = new PathEntry(20, -30, 1, 70);
+					PathEntry *p4 = new PathEntry(0, -20, 1, 70);
+					PathEntry *p5 = new PathEntry(40, -5, 0, 50);
+					PathEntry *p6 = new PathEntry(0, 0, 0, 0);
 					path.push_back(*p1);
+					path.push_back(*p2);
+					path.push_back(*p3);
 					path.push_back(*p4);
 					path.push_back(*p5);
 					path.push_back(*p6);
-					path.push_back(*p2);
-					path.push_back(*p3);
 					PathEntry *p;
 					for (int i = 0; i < 30; ++i) {
 						p = new PathEntry(0, 25, 1, 60);
@@ -100,12 +98,33 @@ void Game::handleEvents() {
 				}
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
-				//cout << "Down arrow pressed" << endl;
 				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
-					//we lose
 					cout << "END OF GAME" << endl;
-					qbert->SetZOrder(5);
-					spriteList.GetList().sort(compare);
+					list<PathEntry> path;
+					PathEntry *p1 = new PathEntry(0, 0, 2, 0);
+					PathEntry *p2 = new PathEntry(-6, 0, 3, 0);
+					PathEntry *p3 = new PathEntry(-20, -30, 3, 70);
+					PathEntry *p4 = new PathEntry(-40, 0, 2, 70);
+					PathEntry *p5 = new PathEntry(-10, 105, 2, 50);
+					PathEntry *p6 = new PathEntry(0, 0, 2, 0);
+					path.push_back(*p1);
+					path.push_back(*p2);
+					path.push_back(*p3);
+					path.push_back(*p4);
+					path.push_back(*p5);
+					path.push_back(*p6);
+					PathEntry *p;
+					for (int i = 0; i < 30; ++i) {
+						p = new PathEntry(0, 25, 2, 60);
+						path.push_back(*p);
+					}
+					MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
+					MovingPathAnimator* qbertAnimator = new MovingPathAnimator(qbert->GetSprite(), qbertAnimation);
+					if (qbert->GetCurrCol() == 1) {
+						qbert->SetZOrder(5);
+						spriteList.GetList().sort(compare);
+					}
+					qbertAnimator->Start(game->GetGameTime());
 				}
 				else {
 					qbert->moveDownLeft();
@@ -116,12 +135,35 @@ void Game::handleEvents() {
 
 			}
 			else if (event.key.keysym.sym == SDLK_RIGHT) {
-				//cout << "Right arrow pressed" << endl;
 				if (qbert->GetCurrRow() == terrain->GetTotalRows()) {
 					//we lose
 					cout << "END OF GAME" << endl;
-					qbert->SetZOrder(5);
-					spriteList.GetList().sort(compare);
+					list<PathEntry> path;
+					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
+					PathEntry *p2 = new PathEntry(0, 0, 1, 0);
+					PathEntry *p3 = new PathEntry(20, -30, 1, 70);
+					PathEntry *p4 = new PathEntry(0, -20, 1, 70);
+					PathEntry *p5 = new PathEntry(40, -5, 0, 50);
+					PathEntry *p6 = new PathEntry(0, 0, 0, 0);
+					path.push_back(*p1);
+					path.push_back(*p2);
+					path.push_back(*p3);
+					path.push_back(*p4);
+					path.push_back(*p5);
+					path.push_back(*p6);
+					PathEntry *p;
+					for (int i = 0; i < 30; ++i) {
+						p = new PathEntry(0, 25, 0, 60);
+						path.push_back(*p);
+					}
+					MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
+					MovingPathAnimator* qbertAnimator = new MovingPathAnimator(qbert->GetSprite(), qbertAnimation);
+					if (qbert->GetCurrCol() == terrain->GetTotalRows()) {
+						qbert->SetZOrder(5);
+						spriteList.GetList().sort(compare);
+					}
+					qbertAnimator->Start(game->GetGameTime());
+
 				}
 				else {
 					qbert->moveDownRight();
@@ -133,11 +175,30 @@ void Game::handleEvents() {
 			else if (event.key.keysym.sym == SDLK_LEFT) {
 				//cout << "Left arrow pressed" << endl;
 				if (qbert->GetCurrCol() == 1) {
-				
-						//we lose
 						cout << "END OF GAME" << endl;
-						qbert->SetZOrder(5);
-						spriteList.GetList().sort(compare);
+						list<PathEntry> path;
+						PathEntry *p1 = new PathEntry(0, 0, 2, 0);
+						PathEntry *p2 = new PathEntry(-6, 0, 3, 0);
+						PathEntry *p3 = new PathEntry(-20, -30, 3, 70);
+						PathEntry *p4 = new PathEntry(-40, 0, 2, 70);
+						PathEntry *p5 = new PathEntry(-10, 105, 2, 50);
+						PathEntry *p6 = new PathEntry(0, 0, 2, 0);
+						path.push_back(*p1);
+						path.push_back(*p2);
+						path.push_back(*p3);
+						path.push_back(*p4);
+						path.push_back(*p5);
+						path.push_back(*p6);
+						PathEntry *p;
+						for (int i = 0; i < 30; ++i) {
+							p = new PathEntry(0, 25, 2, 60);
+							path.push_back(*p);
+						}
+						MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "qbert_Animation1");
+						MovingPathAnimator* qbertAnimator = new MovingPathAnimator(qbert->GetSprite(), qbertAnimation);
+							qbert->SetZOrder(5);
+							spriteList.GetList().sort(compare);
+						qbertAnimator->Start(game->GetGameTime());
 						//or we take disk
 					
 			
