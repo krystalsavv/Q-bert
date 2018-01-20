@@ -59,6 +59,7 @@ void Game::update() {
 	ai->logic(GetGameTime());
 	//qbert->Collision();
 	spriteList.Collision(qbert->GetSprite());
+	
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -112,6 +113,8 @@ void Game::handleEvents() {
 				}
 				else{
 					qbert->moveUpRight();
+					terrain->SetActive(qbert->GetCurrCol(),qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 				}
@@ -156,6 +159,8 @@ void Game::handleEvents() {
 				}
 				else {
 					qbert->moveDownLeft();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 					
@@ -204,6 +209,8 @@ void Game::handleEvents() {
 				}
 				else {
 					qbert->moveDownRight();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 				}
@@ -242,6 +249,8 @@ void Game::handleEvents() {
 				}
 				else {
 					qbert->moveUpLeft();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 					//qbert->PrintPos();
 

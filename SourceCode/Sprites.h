@@ -350,7 +350,7 @@ class CubeSprite : public Sprite {
 	unsigned xs;
 	unsigned yc;	// center 
 	unsigned xc;
-
+	bool active = false;
 public:
 	void SetXs(unsigned xs) {
 		this->xs = xs;
@@ -364,7 +364,18 @@ public:
 	void SetYc(unsigned yc) {
 		this->yc = yc;
 	}
-
+	void SetActive() {
+		active = true;
+	}
+	bool isActive() {
+		return active;
+	}
+	int getRow() {
+		return row;
+	}
+	int getCol() {
+		return col;
+	}
 	CubeSprite(string id, AnimationFilm* film, int x, int y, int w, int h, unsigned zorder, unsigned  row, unsigned col) : 
 		Sprite(id, film, x, y, w, h, zorder) {
 		this->row = row;
