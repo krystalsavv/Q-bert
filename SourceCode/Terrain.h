@@ -12,7 +12,7 @@ class IsometricPyramid final {
 	unsigned totalRows;
 	unsigned h1;
 	unsigned h2;
-
+	unsigned int active = 0;
 	unsigned iso_cube_y(unsigned row) {
 		return Py + (row - 1) * h2;
 	}
@@ -58,7 +58,12 @@ public:
 	}
 
 	//void Destroy(void) {} // normally at level program end
-
+	void incrActive() {
+		active++;
+	}
+	int currActive() {
+		return active;
+	}
 	unsigned GetTotalWidth(void) const {
 		assert(sprites.size());
 		return totalRows * (sprites[0]->GetDestinationRect()).w;

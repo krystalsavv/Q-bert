@@ -5,6 +5,8 @@
 #include "Animation.h"
 #include "AI.h"
 
+
+
 Game::Game(){
 	m_pWindow = nullptr;
 	m_pRenderer = nullptr;
@@ -12,6 +14,11 @@ Game::Game(){
 }
 
 Game::~Game(){}
+
+void Game::LifeDecrease() {
+	GameLife--;
+}
+
 
 bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags){
 	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
@@ -40,6 +47,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 	return true;
 }
 
+
 void Game::render() {
 	SDL_RenderClear(m_pRenderer);
 	spriteList.Display();
@@ -66,6 +74,7 @@ void Game::handleEvents() {
 					//OR
 					//Here we lose
 					cout << "END OF GAME " << endl;
+					
 					list<PathEntry> path;
 					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
 					PathEntry *p2 = new PathEntry(0, 0, 1, 0);
@@ -89,6 +98,16 @@ void Game::handleEvents() {
 					qbert->SetZOrder(5);
 					spriteList.GetList().sort(compare);
 					qbertAnimator->Start(game->GetGameTime());
+
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						path.clear();
+						
+						//move to start
+				    }
 					
 				}
 				else{
@@ -125,6 +144,15 @@ void Game::handleEvents() {
 						spriteList.GetList().sort(compare);
 					}
 					qbertAnimator->Start(game->GetGameTime());
+
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						//move to start
+					}
+				
 				}
 				else {
 					qbert->moveDownLeft();
@@ -163,6 +191,15 @@ void Game::handleEvents() {
 						spriteList.GetList().sort(compare);
 					}
 					qbertAnimator->Start(game->GetGameTime());
+
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						//move to start
+					}
+
 
 				}
 				else {

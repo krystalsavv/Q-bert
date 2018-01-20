@@ -15,6 +15,8 @@ class Snake {
 	MovingPathAnimator* SnakeAnimator;
 	int currRow;
 	int currCol;
+	int prevRow;
+	int prevCol;
 	bool isBorn;
 public:
 	void Create(int x, int y) {
@@ -24,6 +26,34 @@ public:
 		SnakeSprite = new Sprite("Snake", film2, 0, 0, 38, 50, 20);  //  den to vazw sthn sprite list  -- prepei na allaksw kai position
 		spriteList.Insert(sprite);
 	}
+
+	int GetCurrRow() {
+		return currRow;
+	}
+	int GetCurrCol() {
+		return currCol;
+	}
+
+	void SetCurrRow(int x) {
+		currRow = x;
+	}
+	void SetCurrCol(int x) {
+		currCol = x;
+	}
+
+	int GetPrevRow() {
+		return prevRow;
+	}
+	int GetPrevCol() {
+		return prevCol;
+	}
+	void SetPrevRow(int x) {
+		prevRow = x;
+	}
+	void SetPrevCol(int x) {
+		prevCol = x;
+	}
+
 
 	void SetFrame(unsigned FrameNo) {
 		sprite->SetFrame(FrameNo);

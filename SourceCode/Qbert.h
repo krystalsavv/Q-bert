@@ -16,7 +16,11 @@ public:
 		sprite = new Sprite("Qbert", film, x, y, 50, 50, 20); //48,48
 		spriteList.Insert(sprite);
 	}
-
+	void Restore() {
+		currCol = 1;
+		currRow = 1;
+		
+	}
 	void SetZOrder(unsigned zOrder) {  // check an ta allazei kai sthn list
 		sprite->SetZOrder(zOrder);
 	}
@@ -144,6 +148,11 @@ public:
 
 
 
+	}
+
+	void moveToStart() {
+		sprite->Move(375,56);
+		Restore();
 	}
 
 	void PrintPos() {
