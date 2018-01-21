@@ -18,8 +18,6 @@ AnimatorHolder AnimatorHolder::animatorHolder = AnimatorHolder();
 list<Animator*> AnimatorHolder::running;
 list<Animator*> AnimatorHolder::suspended;
 
-int Disk::lala = 0;
-
 int AI::sum = 0;
 
 
@@ -31,11 +29,13 @@ int main(int argc, char* args[]) {
 	Qbert *qbert = new Qbert(377,56);
 	Disk *diskLeft = new Disk("DiskLeft", 70, 350);
 	Disk *diskRight = new Disk("DiskRight", 680, 350);
-	
+	diskLeft->Spin();
+	diskRight->Spin();
 	game->SetGameTime();  // arxhkopoiw to game->currTime (den einai swsto ekei kai prepei na fygei apla to xrhsimopoiw gia na dwkomasw to Qbert::Animation())
 
 	AI* ai = new AI(game->GetGameTime());
 	game->SetSprite(terrain, qbert, diskLeft, diskRight, ai);
+	
 	while (game->running()) {
 		game->SetGameTime();
 		game->handleEvents();

@@ -35,20 +35,18 @@ public:
 	}
 
 	void moveRight() {
-		currCol++;
+		++currCol;
 	}
 	void moveLeft() {
-		currCol--;
+		--currCol;
 	}
 	void moveDownRight() {
-		currRow++;
-		currCol++;
+		++currRow;
+		++currCol;
 		PathEntry *p1 = new PathEntry(0, 0, 0, 70);
-
 		PathEntry *p4 = new PathEntry(0, 0, 1, 70);
 		PathEntry *p5 = new PathEntry(0, -30, 1, 70);
 		PathEntry *p6 = new PathEntry(40, 0, 0, 70);
-
 		PathEntry *p2 = new PathEntry(10, 105, 0, 50);
 		PathEntry *p3 = new PathEntry(0, 0, 0, 0);
 		path.push_back(*p1);
@@ -68,15 +66,13 @@ public:
 		//sprite->Move(50, 75);
 	}
 	void moveDownLeft() {
-		currRow++;
+		++currRow;
 		//sprite->Move(-50, 75);
 
 		PathEntry *p1 = new PathEntry(0, 0, 2, 70);
-
 		PathEntry *p4 = new PathEntry(0, 0, 3, 70);
 		PathEntry *p5 = new PathEntry(0, -30, 3, 70);
 		PathEntry *p6 = new PathEntry(-40, 0, 2, 70);
-
 		PathEntry *p2 = new PathEntry(-10, 105, 2, 50);
 		PathEntry *p3 = new PathEntry(0, 0, 2, 0);
 		path.push_back(*p1);
@@ -97,11 +93,9 @@ public:
 		currRow--;
 		//sprite->Move(50, -75);
 		PathEntry *p1 = new PathEntry(0, 0, 0, 70);
-
 		PathEntry *p4 = new PathEntry(0, 0, 1, 70);
 		PathEntry *p5 = new PathEntry(0, -20, 1, 70);
 		PathEntry *p6 = new PathEntry(0, -50, 1, 70);
-
 		PathEntry *p2 = new PathEntry(50, -5, 0, 50);
 		PathEntry *p3 = new PathEntry(0, 0, 0, 0);
 		path.push_back(*p1);
@@ -121,7 +115,6 @@ public:
 	void moveUpLeft() {
 		currRow--;
 		currCol--;
-		//sprite->Move(-50, -75);
 		PathEntry *p1 = new PathEntry(0, 0, 2, 70);
 		PathEntry *p4 = new PathEntry(0, 0, 3, 70);
 		PathEntry *p5 = new PathEntry(0, -20, 3, 70);
@@ -141,13 +134,100 @@ public:
 
 		path.clear();
 		path.push_back(*p1);
-
-
-
 	}
+
+	void MoveUpDiskLeft() {
+		PathEntry * p_1 = new PathEntry(0, 0, 0, 70);		
+		PathEntry * p_2 = new PathEntry(0, -30, 1, 70);
+		PathEntry * p_3 = new PathEntry(-10, -30, 1, 70);
+		PathEntry * p_4 = new PathEntry(-20, 0, 1, 70);
+		PathEntry * p_5 = new PathEntry(-30, 0, 0, 70);
+		PathEntry * p_6 = new PathEntry(-45, 22, 0, 70);
+		PathEntry * p_7 = new PathEntry(0, 0, 0, 300);
+		path.push_back(*p_1);
+		path.push_back(*p_2);
+		path.push_back(*p_3);
+		path.push_back(*p_4);
+		path.push_back(*p_5);
+		path.push_back(*p_6);
+		path.push_back(*p_7);
+					
+		PathEntry * p1 = new PathEntry(40, -60, 0, 100);
+		PathEntry * p2 = new PathEntry(30, -25, 1, 100);
+		PathEntry * p3 = new PathEntry(20, -22, 2, 100);
+		PathEntry * p4 = new PathEntry(20, -20, 3, 100);
+		PathEntry * p5 = new PathEntry(10, -20, 0, 100);
+		//for (int i = 0; i < 2; ++i) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+		PathEntry * p = new PathEntry(20, -10, 1, 100);
+		path.push_back(*p);
+		//}
+		//PathEntry * p6 = new PathEntry(0, 0, 4, 150);
+		//path.push_back(*p6);
+		
+			
+		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator * diskAnimator = new MovingPathAnimator(sprite, diskAnimation);
+		diskAnimator->Start(game->GetGameTime());
+		
+		path.clear();
+		path.push_back(*p_1);
+				
+	}
+
+	void MoveUpDiskRight() {			
+		PathEntry * p_1 = new PathEntry(0, 0, 0, 70);		
+		PathEntry * p_2 = new PathEntry(0, -30, 1, 70);
+		PathEntry * p_3 = new PathEntry(10, -30, 1, 70);
+		PathEntry * p_4 = new PathEntry(20, 0, 1, 70);
+		
+		PathEntry * p_5 = new PathEntry(30, 0, 0, 70);
+		PathEntry * p_6 = new PathEntry(30, 60, 0, 70);
+		path.push_back(*p_1);
+		path.push_back(*p_2);
+		path.push_back(*p_3);
+		path.push_back(*p_4);
+		path.push_back(*p_5);
+		path.push_back(*p_6);
+		
+			
+		PathEntry * p1 = new PathEntry(-20, -20, 0, 100);
+		PathEntry * p2 = new PathEntry(-20, -20, 1, 100);
+		PathEntry * p3 = new PathEntry(-20, -20, 2, 100);
+		PathEntry * p4 = new PathEntry(-20, -20, 3, 100);
+		PathEntry * p5 = new PathEntry(-20, -20, 0, 100);
+		for (int i = 0; i < 3; ++i) {
+			path.push_back(*p2);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);			
+		}
+		PathEntry * p6 = new PathEntry(0, 0, 4, 150);
+		path.push_back(*p6);
+			
+		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
+		MovingPathAnimator * diskAnimator = new MovingPathAnimator(sprite, diskAnimation);
+		diskAnimator->Start(game->GetGameTime());
+		
+		path.clear();
+		path.push_back(*p_1);
+		
+			
+	}
+
 
 	void PrintPos() {
 		cout << "ROW " << currRow << " COLL " << currCol << endl;
+	}
+
+	void Restore() {
+		currCol = 1;
+		currRow = 1;
 	}
 
 	AnimationFilm* GetFilm() {

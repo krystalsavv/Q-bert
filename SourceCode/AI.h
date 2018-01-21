@@ -15,7 +15,6 @@ class Snake {
 	MovingPathAnimator* SnakeAnimator;
 	int currRow;
 	int currCol;
-	bool isBorn;
 public:
 	void Create(int x, int y) {
 		AnimationFilm* film = GetFilmBall();
@@ -52,8 +51,12 @@ public:
 	void SetSnakeAnimator(MovingPathAnimator* a) {
 		SnakeAnimator = a;
 	}
-	void SetIsBorn(bool b) {
-		isBorn = b;
+
+	void SetRow(int row) {
+		currRow = row;
+	}
+	void SetCol(int col) {
+		currCol = col;
 	}
 
 	Sprite* GetSprite() {
@@ -74,40 +77,58 @@ public:
 	MovingPathAnimator* GetSnakeAnimator() {
 		return SnakeAnimator;
 	}
-	bool GetIsBorn() {
-		return isBorn;
-	}
 
 	void SnakeAI() {
 		int qbertRow = game->qbert->GetCurrRow();
 		int qbertCol = game->qbert->GetCurrCol();
 		list<PathEntry> path;
-
+		//poso x thelw na kounhsei,poso y,poio sprite na paei kai 1000 poso na meinei sthn othonh
 		PathEntry *p = new PathEntry(0, 0, 5, 1000); // panta prwta to cuurPosition
 		path.push_back(*p);
-		p = new PathEntry(50, -74, 1, 1000);
-		path.push_back(*p);
-		SnakeAnimation->SetPath(path);
+		/*		p = new PathEntry(50, -74, 1, 1000);
+				path.push_back(*p);
+				SnakeAnimation->SetPath(path);
+				*/
+				// na dw poia prepei na einai h arxikh timh gia currCol/Row
 
-													// na dw poia prepei na einai h arxikh timh gia currCol/Row
-		if (currRow>=qbertRow) {
-			if (currCol >= qbertCol) {
-				 //pathUpRight(&path);
-				// ananewnw kai ta currCol/row se ola
-			}
-			else {
-				// pathUpLeft(&path);
-			}
-		}
-		else {
+		// ananewnw kai ta currCol/row se ola
+		std::cout << currRow;
+		std::cout << "\n" << currCol << "\n";
+		std::cout << qbertRow;
+		std::cout << "\n" << qbertCol << "\n";
+		if (currRow >= qbertRow) {
 			if (currCol <= qbertCol) {
-				// pathDownLeft(&path);
+				//pathUpRight(&path);
+				p = new PathEntry(50, -74, 1, 1000);
+				path.push_back(*p);
+				currRow--;
 			}
 			else {
-				// pathDownRignt(&path);
+				//pathUpLeft(&path);
+				p = new PathEntry(-50, -74, 1, 1000);
+				path.push_back(*p);
+				currRow--;
+				currCol--;
 			}
 		}
+		if(currRow < qbertRow) {
+			if (currCol >= qbertCol) {
+				//pathDownRight(&path);
+				p = new PathEntry(-50, 74, 1, 1000);
+				path.push_back(*p);
+				currRow++;
+			}
+			else {
+				//pathDownLeft(&path);
+				p = new PathEntry(50, 74, 1, 1000);
+				path.push_back(*p);
+				currRow++;
+				currCol++;
+			}
+		}
+		SnakeAnimation->SetPath(path);
 	}
+
 
 	void pathUpRight(list<PathEntry>* path) {}
 	void pathUpLeft(list<PathEntry>* path) {}
@@ -214,7 +235,6 @@ public:
 	void Reset() {
 		currRow = 8; // na dw poia prpei na einai h arxikh timh
 		currCol = 8; //
-		isBorn = false;
 	}
 
 	Snake( int x, int y) {
@@ -224,7 +244,6 @@ public:
 		Animator = nullptr;
 		currRow = 8;
 		currCol = 8;
-		isBorn = false;
 	}
 };
 
@@ -267,6 +286,8 @@ public:
 			snake->GetSnakeSprite()->GetDestinationRect().y = snake->GetSprite()->GetDestinationRect().y;
 			spriteList.Insert(snake->GetSnakeSprite());
 			spriteList.Remove(snake->GetSprite());
+			//snake->SetRow(7);
+			//snake->SetCol(); 
 			snake->GetSnakeAnimator()->Start(game->GetGameTime());
 		}
 		else if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_FINISHED) { // AI for snake

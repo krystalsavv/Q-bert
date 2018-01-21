@@ -4,6 +4,7 @@
 #include "Qbert.h"
 #include "Animation.h"
 #include "AI.h"
+#include "Disk.h"
 
 Game::Game(){
 	m_pWindow = nullptr;
@@ -50,7 +51,7 @@ void Game::render() {
 void Game::update() {
 	ai->logic(GetGameTime());
 	//qbert->Collision();
-	spriteList.Collision(qbert->GetSprite());
+	//spriteList.Collision(qbert->GetSprite());
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -65,6 +66,13 @@ void Game::handleEvents() {
 					//check for disk and then new event
 					//OR
 					//Here we lose
+					if (qbert->GetCurrRow() == 5) {
+						diskRight->MoveUpRight();
+						//qbert->MoveUpDiskRight();
+						qbert->Restore();
+						return;
+					}
+
 					cout << "END OF GAME " << endl;
 					list<PathEntry> path;
 					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
@@ -175,6 +183,13 @@ void Game::handleEvents() {
 			else if (event.key.keysym.sym == SDLK_LEFT) {
 				//cout << "Left arrow pressed" << endl;
 				if (qbert->GetCurrCol() == 1) {
+					if (qbert->GetCurrRow() == 5) {
+						diskLeft->MoveUpLeft();
+						//qbert->MoveUpDiskLeft();
+						qbert->Restore();
+						return;
+					}
+
 						cout << "END OF GAME" << endl;
 						list<PathEntry> path;
 						PathEntry *p1 = new PathEntry(0, 0, 2, 0);
