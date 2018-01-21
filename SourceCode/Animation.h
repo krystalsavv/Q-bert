@@ -2,6 +2,7 @@
 #define _ANIMATION_ 
 #include "Sprites.h"
 
+
 class Animator;
 void AnimatorHolder_Register(Animator* a);
 void AnimatorHolder_Cancel(Animator* a);
@@ -147,6 +148,7 @@ public:
 
 
 class MovingPathAnimator : public Animator {
+protected:
 	Sprite*	sprite;
 	MovingPathAnimation* anim;
 	PathEntry *currPathFrame; 
@@ -156,7 +158,7 @@ public:
 		cont = c;
 	}
 
-	bool Progress(unsigned long currTime) {
+	virtual bool Progress(unsigned long currTime) {
 		assert(currPathFrame);
 		assert(anim);
 		assert(sprite);
@@ -219,6 +221,7 @@ public:
 	}
 	~MovingPathAnimator() {}
 };
+
 
 
 

@@ -59,7 +59,7 @@ public:
 
 
 	void SetActive(int col1, int row1) {
-		for (int i = 0; i < sprites.size(); i++) {
+		for (unsigned i = 0; i < sprites.size(); i++) {
 			if (sprites[i]->getCol() == col1 && sprites[i]->getRow() == row1) {
 				if (!sprites[i]->isActive()) {
 					sprites[i]->SetActive();

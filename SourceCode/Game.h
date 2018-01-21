@@ -4,12 +4,16 @@
 #include <SDL.h>
 #include <ctime>
 
+
 using namespace std;
 
 class Qbert;
 class IsometricPyramid;
 class Disk;
 class AI;
+class Snake;
+class Ball;
+class Sprite;
 
 class Game {
 	unsigned long currTime = 0;
@@ -37,6 +41,8 @@ public:
 	void SetGameTime();
 	unsigned long GetGameTime();
 	AI* GetAI();
+	Snake * GetSnake();
+	Ball * GetBall(Sprite *s);
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();

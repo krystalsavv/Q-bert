@@ -5,6 +5,7 @@
 
 class Ball {
 	Sprite *sprite;
+	list<int> ColList;
 	int currRow;
 	int currCol;
 	int prevRow;
@@ -55,7 +56,19 @@ public:
 	void SetPrevCol(int x) {
 		prevCol=x;
 	}
-
+	void SetColList(list<int>& ColList) {
+		assert((this->ColList.empty()));
+		this->ColList.assign(ColList.begin(), ColList.end());
+	}
+	list<int> GetColList() {
+		return ColList;
+	}
+	void UpdateRowCol(int row, int col) {
+		prevRow = currRow;
+		prevCol = currCol;
+		currRow = row;
+		currCol = col;
+	}
 
 	void Destroy(){} //!!!!!!!!!!!! kathe fora pou feygei kapoio ball apo to window
 

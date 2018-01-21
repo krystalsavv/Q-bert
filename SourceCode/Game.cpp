@@ -312,6 +312,13 @@ AI* Game::GetAI() {
 	return ai;
 }
 
+Snake * Game::GetSnake() {
+	return ai->GetSnake();
+}
+Ball * Game::GetBall(Sprite *s) {
+	return ai->GetBall(s);
+}
+
 
 //gia thn SpriteList (einai ligo akyrh edw alla den exw allo cpp arxeio na thn balw)
 //sort apo to mikrotero zOrder sto megalytero
