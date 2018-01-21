@@ -26,12 +26,7 @@ public:
 		spriteList.Insert(sprite);
 	}
 
-	int GetCurrRow() {
-		return currRow;
-	}
-	int GetCurrCol() {
-		return currCol;
-	}
+
 
 	void SetCurrRow(int x) {
 		currRow = x;
@@ -39,21 +34,12 @@ public:
 	void SetCurrCol(int x) {
 		currCol = x;
 	}
-
-	int GetPrevRow() {
-		return prevRow;
-	}
-	int GetPrevCol() {
-		return prevCol;
-	}
 	void SetPrevRow(int x) {
 		prevRow = x;
 	}
 	void SetPrevCol(int x) {
 		prevCol = x;
 	}
-
-
 	void SetFrame(unsigned FrameNo) {
 		sprite->SetFrame(FrameNo);
 	}
@@ -82,13 +68,18 @@ public:
 		SnakeAnimator = a;
 	}
 
-	void SetRow(int row) {
-		currRow = row;
+	int GetCurrRow() {
+		return currRow;
 	}
-	void SetCol(int col) {
-		currCol = col;
+	int GetCurrCol() {
+		return currCol;
 	}
-
+	int GetPrevRow() {
+		return prevRow;
+	}
+	int GetPrevCol() {
+		return prevCol;
+	}
 	Sprite* GetSprite() {
 		return sprite;
 	}
@@ -494,6 +485,8 @@ public:
 				spriteList.Remove(snake->GetSnakeSprite());
 				snake->SetBallX(330 + ((col - 1) * 100));
 				snake->SetBallY(0);
+				snake->SetCurrRow(8);
+				snake->SetCurrCol(8);
 				snake->UpdateRowCol(2, col);
 				snake->GetAnimator()->Start(game->GetGameTime());
 			}
@@ -504,6 +497,8 @@ public:
 						ballAnim->GetBallAnimator()->SetState(ANIMATOR_READY);
 						ballAnim->GetBall()->SetX(330 +((col - 1) * 100));
 						ballAnim->GetBall()->SetY(0);
+						ballAnim->GetBall()->SetCurrRow(8);
+						ballAnim->GetBall()->SetCurrCol(8);
 						ballAnim->GetBall()->UpdateRowCol(2, col);
 						list<int> ColList = ballAnim->GetBall()->GetColList();
 						ballAnim->GetBallAnimator()->SetColList(ColList);
