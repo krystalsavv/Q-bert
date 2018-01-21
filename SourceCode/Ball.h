@@ -5,6 +5,10 @@
 
 class Ball {
 	Sprite *sprite;
+	int currRow;
+	int currCol;
+	int prevRow;
+	int prevCol;
 public:
 	void Create(string id, int x, int y) {
 		AnimationFilm* film = GetFilm();
@@ -24,6 +28,34 @@ public:
 	Sprite* GetSprite() {
 		return sprite;
 	}
+
+	int GetCurrRow() {
+		return currRow;
+	}
+	int GetCurrCol() {
+		return currCol;
+	}
+
+	void SetCurrRow(int x) {
+		currRow=x;
+	}
+	void SetCurrCol(int x) {
+		currCol=x;
+	}
+
+	int GetPrevRow() {
+		return prevRow;
+	}
+	int GetPrevCol() {
+		return prevCol;
+	}
+	void SetPrevRow(int x) {
+		prevRow = x;
+	}
+	void SetPrevCol(int x) {
+		prevCol=x;
+	}
+
 
 	void Destroy(){} //!!!!!!!!!!!! kathe fora pou feygei kapoio ball apo to window
 

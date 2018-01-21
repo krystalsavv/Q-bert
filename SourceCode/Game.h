@@ -19,8 +19,10 @@ public:
 	Disk *diskLeft;
 	Disk *diskRight;
 	AI *ai;
+	unsigned int GameLife = 3;
 	Game();
 	~Game();
+	void LifeDecrease();
 	// simply set the running variable to true  
 	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
 	void render();
@@ -38,6 +40,7 @@ public:
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();
+
 private:
 	SDL_Window * m_pWindow;
 	SDL_Renderer* m_pRenderer;

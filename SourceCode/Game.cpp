@@ -6,6 +6,8 @@
 #include "AI.h"
 #include "Disk.h"
 
+
+
 Game::Game(){
 	m_pWindow = nullptr;
 	m_pRenderer = nullptr;
@@ -13,6 +15,11 @@ Game::Game(){
 }
 
 Game::~Game(){}
+
+void Game::LifeDecrease() {
+	GameLife--;
+}
+
 
 bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags){
 	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
@@ -41,6 +48,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 	return true;
 }
 
+
 void Game::render() {
 	SDL_RenderClear(m_pRenderer);
 	spriteList.Display();
@@ -50,8 +58,7 @@ void Game::render() {
 
 void Game::update() {
 	ai->logic(GetGameTime());
-	//qbert->Collision();
-	//spriteList.Collision(qbert->GetSprite());
+	spriteList.Collision(qbert->GetSprite());
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -74,6 +81,7 @@ void Game::handleEvents() {
 					}
 
 					cout << "END OF GAME " << endl;
+					
 					list<PathEntry> path;
 					PathEntry *p1 = new PathEntry(0, 0, 0, 0);
 					PathEntry *p2 = new PathEntry(0, 0, 1, 0);
@@ -97,10 +105,22 @@ void Game::handleEvents() {
 					qbert->SetZOrder(5);
 					spriteList.GetList().sort(compare);
 					qbertAnimator->Start(game->GetGameTime());
+
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						path.clear();
+						
+						//move to start
+				    }
 					
 				}
 				else{
 					qbert->moveUpRight();
+					terrain->SetActive(qbert->GetCurrCol(),qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 				}
@@ -133,9 +153,20 @@ void Game::handleEvents() {
 						spriteList.GetList().sort(compare);
 					}
 					qbertAnimator->Start(game->GetGameTime());
+
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						//move to start
+					}
+				
 				}
 				else {
 					qbert->moveDownLeft();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 					
@@ -172,9 +203,20 @@ void Game::handleEvents() {
 					}
 					qbertAnimator->Start(game->GetGameTime());
 
+					LifeDecrease();
+					if (GameLife <= 0) {
+						//End of game
+					}
+					else {
+						//move to start
+					}
+
+
 				}
 				else {
 					qbert->moveDownRight();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 				//	qbert->PrintPos();
 				}
@@ -220,6 +262,8 @@ void Game::handleEvents() {
 				}
 				else {
 					qbert->moveUpLeft();
+					terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
+					cout << "Current active : " << terrain->currActive() << endl;
 				//	cout << "Position changed to : ";
 					//qbert->PrintPos();
 
