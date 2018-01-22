@@ -27,7 +27,6 @@ public:
 	}
 
 
-
 	void SetCurrRow(int x) {
 		currRow = x;
 	}
@@ -102,14 +101,19 @@ public:
 	void SnakeAI() {
 		int qbertRow = game->qbert->GetCurrRow();
 		int qbertCol = game->qbert->GetCurrCol();
+		
 		list<PathEntry> path;
 		if (currRow >= qbertRow) {
 			if (currCol <= qbertCol) {
 				pathUpRight(&path);
+				prevRow = currRow;
+				prevCol = currCol;
 				currRow--;
 			}
 			else {
 				pathUpLeft(&path);
+				prevRow = currRow;
+				prevCol = currCol;
 				currRow--;
 				currCol--;
 			}
@@ -117,15 +121,20 @@ public:
 		if(currRow < qbertRow) {
 			if (currCol >= qbertCol) {
 				pathDownLeft(&path);
+				prevRow = currRow;
+				prevCol = currCol;
 				currRow++;
 			}
 			else {
-				pathDownRight(&path);				
+				pathDownRight(&path);
+				prevRow = currRow;
+				prevCol = currCol;
 				currRow++;
 				currCol++;
 			}
 		}
 		SnakeAnimation->SetPath(path);
+	//	cout << "Snake Position curr: " << currRow << "  " << currCol << "   prev: " << prevRow << " " << prevCol << endl;
 	}
 
 
