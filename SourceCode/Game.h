@@ -39,6 +39,8 @@ public:
 					Disk *diskRight,
 					AI *ai);
 	void SetGameTime();
+	void SetDiskRightMoveTop(bool b);
+	void SetDiskLeftMoveTop(bool b);
 	unsigned long GetGameTime();
 	AI* GetAI();
 	Snake * GetSnake();

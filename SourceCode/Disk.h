@@ -3,13 +3,61 @@
 #include "Sprites.h"
 #include "Animation.h"
 
+
+
+
+class MovingPathAnimatorDisk : public MovingPathAnimator {
+public:
+	virtual bool Progress(unsigned long currTime) {
+		assert(currPathFrame);
+		assert(anim);
+		assert(sprite);
+		while (currTime > lastTime && currTime - lastTime >= currPathFrame->delay) {
+			currPathFrame = anim->GetNextPathFrame(currPathFrame);
+			assert(currPathFrame);															 //NULL an den yparxei 
+			sprite->Move(currPathFrame->dx, currPathFrame->dy);
+			sprite->SetFrame(currPathFrame->frame);
+			lastTime += currPathFrame->delay;
+
+			if (currPathFrame == anim->GetEndPathFrame()) {
+				if (cont)
+					currPathFrame = anim->GetStartPathFrame();
+				else {
+					if (!(sprite->GetId().compare("DiskLeft_withQbert"))) {
+						game->SetDiskLeftMoveTop(false);
+					}
+					else {
+						game->SetDiskRightMoveTop(false);
+					}
+					spriteList.Remove(sprite);
+					spriteList.Insert(game->qbert->GetSprite());
+					state = ANIMATOR_FINISHED;
+					NotifyStopped();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	MovingPathAnimatorDisk(Sprite* s, MovingPathAnimation* a) : MovingPathAnimator(s, a) {
+		if (sprite->GetId().compare("DiskLeft")) {
+			game->SetDiskLeftMoveTop(true);
+		}
+		else {
+			game->SetDiskRightMoveTop(true);
+		}
+	}
+};
+
+
+
 class Disk {
 	Sprite *DiskSprite;
 	Sprite *QbertSprite;
-	
-	static int lala;		// den xreiazetai apla gia na emfanizw kai tous 2 typous diskwn (me kai xwris qbert) sto window
-							// to xrhsimopoio apla sthn create alla tha fygei apo ton teliko code 
-
+	bool moveTop; 
+	bool isActive;
 public:
 	void Create(string id, int x, int y) {
 		AnimationFilm* DiskFilm = GetFilm();								// fortonei to film tou aplou diskou 
@@ -39,6 +87,8 @@ public:
 		diskAnimator->Start(game->GetGameTime());			
 	}
 	void MoveUpLeft() {
+		moveTop = true;
+		isActive = false;
 		std::list<PathEntry> path;
 		PathEntry * p = new PathEntry(-100, 0, 0, 10);
 		path.push_back(*p);
@@ -61,11 +111,14 @@ public:
 		spriteList.Remove(DiskSprite);
 		spriteList.Insert(QbertSprite);
 		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
-		MovingPathAnimator * diskAnimator = new MovingPathAnimator(QbertSprite, diskAnimation);
+		MovingPathAnimator * diskAnimator = new MovingPathAnimatorDisk(QbertSprite, diskAnimation);
 		diskAnimator->Start(game->GetGameTime());	
 	}
 	
-		void MoveUpRight() {
+	void MoveUpRight() {
+		moveTop = true;
+		isActive = false;
+
 		std::list<PathEntry> path;
 		PathEntry * p = new PathEntry(0, 0, 0, 500);
 		path.push_back(*p);
@@ -84,12 +137,22 @@ public:
 		}
 		PathEntry * p6 = new PathEntry(-25, -45, 4, 150);
 		path.push_back(*p6);	
+		spriteList.Remove(DiskSprite);
+		spriteList.Insert(QbertSprite);
 		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
-		MovingPathAnimator * diskAnimator = new MovingPathAnimator(DiskSprite, diskAnimation);
-		diskAnimator->Start(game->GetGameTime());	
+		MovingPathAnimator * diskAnimator = new MovingPathAnimatorDisk(QbertSprite, diskAnimation);
+		diskAnimator->Start(game->GetGameTime());
 	}
 
-	//void Destroy(void) {} // normally at level program end
+	void SetMoveTop(bool b) {
+		moveTop = b;
+	}
+	bool GetMoveTop() {
+		return moveTop;
+	}
+	bool GetIsActive() {
+		return isActive;
+	}
 	
 	AnimationFilm* GetFilm() {
 		AnimationFilm* film = AnimationFilmHolder::Get().GetFilm("disks");
@@ -172,10 +235,14 @@ public:
 
 	Disk(string id,int x, int y) {
 		Create(id, x, y);
+		moveTop = false;
+		isActive = true;
 	}
 
 	Disk(char *id, int x, int y) {
 		Create(id, x, y);
+		moveTop = false;
+		isActive = true;
 	}
 };
 

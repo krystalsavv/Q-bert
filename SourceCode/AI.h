@@ -103,11 +103,6 @@ public:
 		int qbertRow = game->qbert->GetCurrRow();
 		int qbertCol = game->qbert->GetCurrCol();
 		list<PathEntry> path;
-
-		std::cout << currRow;
-		std::cout << "\n" << currCol << "\n";
-		std::cout << qbertRow;
-		std::cout << "\n" << qbertCol << "\n";
 		if (currRow >= qbertRow) {
 			if (currCol <= qbertCol) {
 				pathUpRight(&path);
@@ -302,13 +297,13 @@ public:
 					int row = game->GetSnake()->GetCurrRow() + 1; // ayksanw to row
 					int col = game->GetSnake()->GetCurrCol() + ColList.front(); // ypologizw col
 					game->GetSnake()->UpdateRowCol(row, col);
-					cout << "SNAKE BALL: row->" << game->GetSnake()->GetCurrRow() << " col->" << game->GetSnake()->GetCurrCol() << endl;
+				//	cout << "SNAKE BALL: row->" << game->GetSnake()->GetCurrRow() << " col->" << game->GetSnake()->GetCurrCol() << endl;
 				}
 				else {
 				int row = game->GetBall(sprite)->GetCurrRow() + 1; 
 				int col = game->GetBall(sprite)->GetCurrCol() + ColList.front();
 				game->GetBall(sprite)->UpdateRowCol(row, col);
-				cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
+			//	cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
 				}
 				ColList.pop_front();
 			}

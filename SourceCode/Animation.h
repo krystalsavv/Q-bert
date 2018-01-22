@@ -225,6 +225,9 @@ public:
 
 
 
+
+
+
 class AnimatorHolder {
 	static list<Animator*> running;
 	static list<Animator*>  suspended;
