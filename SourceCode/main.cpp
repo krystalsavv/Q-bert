@@ -42,6 +42,7 @@ int main(int argc, char* args[]) {
 		game->handleEvents();
 		game->update();
 		game->render();
+		game->Collision();
 	}
 	game->clean();
 	return 0;

@@ -4,7 +4,7 @@
 #include "Ball.h"
 #include "Animation.h"
 #include "Disk.h"
-
+#include "SoundManager.h"
 
 
 class Snake {
@@ -222,27 +222,82 @@ public:
 
 
 	void pathUpRight(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 2, 150); 
+		
+		PathEntry *p1 = new PathEntry(0, 0, 3, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 3, 200);
+		PathEntry *p5 = new PathEntry(0, -20, 3, 200);
+		PathEntry *p6 = new PathEntry(0, -50, 3, 200);
+		PathEntry *p2 = new PathEntry(50, -5, 3, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 3, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(50, -74, 1, 1000);
+		p = new PathEntry(0, 0, 3, 200);
 		path->push_back(*p);
+
 	}
 	void pathUpLeft(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 0, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 1, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 1, 200);
+		PathEntry *p5 = new PathEntry(0, -20, 1, 200);
+		PathEntry *p6 = new PathEntry(0, -50, 1, 200);
+		PathEntry *p2 = new PathEntry(-50, -5, 1, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 1, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
+		
+		 
 		path->push_back(*p);
-		p = new PathEntry(-50, -74, 1, 1000);
+		p = new PathEntry(0, 0, 1, 200);
 		path->push_back(*p);
 	}
 	void pathDownLeft(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 6, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 7, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 7, 200);
+		PathEntry *p5 = new PathEntry(0, -30, 7, 200);
+		PathEntry *p6 = new PathEntry(-40, 0, 7, 200);
+		PathEntry *p2 = new PathEntry(-10, 105, 7, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 7, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(-50, 74, 1, 1000);
+		p = new PathEntry(0, 0, 7, 200);
 		path->push_back(*p);
 	}
 	void pathDownRight(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 4, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 5, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 5, 200);
+		PathEntry *p5 = new PathEntry(0, -30, 5, 200);
+		PathEntry *p6 = new PathEntry(40, 0, 6, 200);
+		PathEntry *p2 = new PathEntry(10, 105, 5, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 5, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(50, 74, 1, 1000);
+		p = new PathEntry(0,0, 5, 200);
 		path->push_back(*p);
 	}
 
@@ -387,7 +442,6 @@ public:
 			sprite->Move(currPathFrame->dx, currPathFrame->dy);
 			sprite->SetFrame(currPathFrame->frame);
 			lastTime += currPathFrame->delay;
-
 			if (!(currPathFrame->dx) && !(currPathFrame->dy) && !(currPathFrame->frame) && !(currPathFrame->delay)) {
 				assert(!ColList.empty());
 				if (!(sprite->GetId().compare("SnakeBall"))) {
@@ -402,9 +456,9 @@ public:
 				game->GetBall(sprite)->UpdateRowCol(row, col);
 			//	cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
 				}
+				TheSoundManager::Instance()->playSound("Ball", 0);
 				ColList.pop_front();
 			}
-
 			if (currPathFrame == anim->GetEndPathFrame()) {
 				if (cont)
 					currPathFrame = anim->GetStartPathFrame();
@@ -463,7 +517,6 @@ class AI {
 public:
 	void logic(unsigned long currTime) {
 		srand(time(0));
-
 		if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_READY) { // ksekinaei to fidi
 			snake->GetSnakeSprite()->GetDestinationRect().x = snake->GetSprite()->GetDestinationRect().x;
 			snake->GetSnakeSprite()->GetDestinationRect().y = snake->GetSprite()->GetDestinationRect().y;
@@ -505,7 +558,6 @@ public:
 				}
 				p = new PathEntry(0, 28, 4, 70);
 				path.push_back(*p);
-
 				for (int i = 0; i < 5; ++i) {
 					if (rand() % 2) {				// aristera
 						PathEntry *p1 = new PathEntry(0, 0, 5, 150);
@@ -559,7 +611,6 @@ public:
 				snake->SetAnimation(SnakeBallAnimation);
 				snake->SetAnimator(SnakeBallAnimator);
 				snake->GetAnimator()->Start(game->GetGameTime());
-
 
 				list<PathEntry> path2;
 				PathEntry *p2;
@@ -717,7 +768,6 @@ public:
 						path.push_back(*p);
 						ColList.push_back(0);
 						path.push_back(*p3);
-
 					}
 					else {							//deksia
 						//p = new PathEntry(50, 74, 1, 1000);
@@ -740,7 +790,6 @@ public:
 						path.push_back(*p);
 						ColList.push_back(1);
 						path.push_back(*p3);
-
 					}
 				}
 				for (int i = 0; i < 10; ++i) {
@@ -756,7 +805,7 @@ public:
 				ballAnim->GetBallAnimator()->Start(game->GetGameTime());
 				sum++;
 			}
-
+			TheSoundManager::Instance()->playSound("Ball", 0);
 			lastTime += delay;
 		}
 	}
@@ -785,6 +834,7 @@ public:
 		snake = nullptr;
 		lastTime = t;
 	}
+
 };
 
 
