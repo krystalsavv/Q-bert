@@ -22,6 +22,12 @@ void Game::LifeDecrease() {
 
 
 bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags){
+	TheSoundManager::Instance()->load("Sounds/Hop.wav", "QbertHop", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "Bye", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
 	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
@@ -63,10 +69,6 @@ void Game::update() {
 }
 
 void Game::handleEvents() {
-	TheSoundManager::Instance()->load("Sounds/Hop.wav", "QbertHop", SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "Bye", SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		if (!((diskLeft &&  diskLeft->GetMoveTop()) || (diskRight &&  diskRight->GetMoveTop()))) {

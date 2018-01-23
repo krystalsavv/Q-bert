@@ -290,8 +290,6 @@ class MovingPathAnimatorAI : public MovingPathAnimator {
 	list<int> ColList;
 public:
 	virtual bool Progress(unsigned long currTime) {
-		TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
-		TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
 		assert(currPathFrame);
 		assert(anim);
 		assert(sprite);
@@ -376,8 +374,6 @@ class AI {
 public:
 	void logic(unsigned long currTime) {
 		srand(time(0));
-		TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
-		TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
 		if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_READY) { // ksekinaei to fidi
 			snake->GetSnakeSprite()->GetDestinationRect().x = snake->GetSprite()->GetDestinationRect().x;
 			snake->GetSnakeSprite()->GetDestinationRect().y = snake->GetSprite()->GetDestinationRect().y;
