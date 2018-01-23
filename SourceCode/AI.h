@@ -456,7 +456,7 @@ public:
 				game->GetBall(sprite)->UpdateRowCol(row, col);
 			//	cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
 				}
-				TheSoundManager::Instance()->playSound("Ball", 0);
+				//TheSoundManager::Instance()->playSound("Ball", 0);
 				ColList.pop_front();
 			}
 			if (currPathFrame == anim->GetEndPathFrame()) {
@@ -805,7 +805,7 @@ public:
 				ballAnim->GetBallAnimator()->Start(game->GetGameTime());
 				sum++;
 			}
-			TheSoundManager::Instance()->playSound("Ball", 0);
+			//TheSoundManager::Instance()->playSound("Ball", 0);
 			lastTime += delay;
 		}
 	}
