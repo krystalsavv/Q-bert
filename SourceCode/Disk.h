@@ -90,24 +90,39 @@ public:
 		moveTop = true;
 		isActive = false;
 		std::list<PathEntry> path;
-		PathEntry * p = new PathEntry(-100, 0, 0, 10);
+		PathEntry * p = new PathEntry(-100, 0, 0, 500);
 		path.push_back(*p);
-		PathEntry * p1 = new PathEntry(20, -20, 0, 70);
-		PathEntry * p2 = new PathEntry(20, -20, 1, 70);
-		PathEntry * p3 = new PathEntry(20, -20, 2, 70);
-		PathEntry * p4 = new PathEntry(20, -20, 3, 70);
-		PathEntry * p5 = new PathEntry(20, -20, 4, 70); 
+		PathEntry * p1 = new PathEntry(20, -30, 0, 100);
+		PathEntry * p2 = new PathEntry(20, -30, 1, 100);
+		PathEntry * p3 = new PathEntry(20, -30, 2, 100);
+		PathEntry * p4 = new PathEntry(20, -30, 3, 100);
+		PathEntry * p5 = new PathEntry(20, -30, 4, 100); 
+		PathEntry * p6 = new PathEntry(20, -30, 3, 100);
 		for (int i = 0; i < 2; ++i) {
 			path.push_back(*p1);
 			path.push_back(*p2);
 			path.push_back(*p3);
 			path.push_back(*p4);
 			path.push_back(*p5);
-			
+			path.push_back(*p6);
 		}
-		PathEntry * p6 = new PathEntry(25, -45, 4, 150);
-		path.push_back(*p6);			
-
+		p6 = new PathEntry(30, 5, 5, 100);
+		path.push_back(*p6);
+		path.push_back(*p6);
+		p1 = new PathEntry(0, 0, 4, 100);
+	    p2 = new PathEntry(0, 0, 4, 100);
+		p3 = new PathEntry(0, 0, 4, 100);
+		p4 = new PathEntry(0, 0, 4, 100);
+		p5 = new PathEntry(0, 0, 4, 100);
+		p6 = new PathEntry(0, 0, 4, 100);
+		for (int i = 0; i < 2; ++i) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+			path.push_back(*p6);
+		}
 		spriteList.Remove(DiskSprite);
 		spriteList.Insert(QbertSprite);
 		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
@@ -122,21 +137,37 @@ public:
 		std::list<PathEntry> path;
 		PathEntry * p = new PathEntry(0, 0, 0, 500);
 		path.push_back(*p);
-		PathEntry * p1 = new PathEntry(-20, -20, 0, 100);
-		PathEntry * p2 = new PathEntry(-20, -20, 1, 100);
-		PathEntry * p3 = new PathEntry(-20, -20, 2, 100);
-		PathEntry * p4 = new PathEntry(-20, -20, 3, 100);
-		PathEntry * p5 = new PathEntry(-20, -20, 4, 100);
-		for (int i = 0; i < 3; ++i) {
+		PathEntry * p1 = new PathEntry(-20, -30, 0, 100);
+		PathEntry * p2 = new PathEntry(-20, -30, 1, 100);
+		PathEntry * p3 = new PathEntry(-20, -30, 2, 100);
+		PathEntry * p4 = new PathEntry(-20, -30, 3, 100);
+		PathEntry * p5 = new PathEntry(-20, -30, 4, 100);
+		PathEntry * p6 = new PathEntry(-20, -30, 5, 100);
+		for (int i = 0; i < 2; ++i) {
 			path.push_back(*p1);
 			path.push_back(*p2);
 			path.push_back(*p3);
 			path.push_back(*p4);
 			path.push_back(*p5);
-			
+			path.push_back(*p6);
 		}
-		PathEntry * p6 = new PathEntry(-25, -45, 4, 150);
-		path.push_back(*p6);	
+		p6 = new PathEntry(-40, 0, 0, 100);
+		path.push_back(*p6);
+		path.push_back(*p6);
+		p1 = new PathEntry(0, 0, 4, 100);
+		p2 = new PathEntry(0, 0, 4, 100);
+		p3 = new PathEntry(0, 0, 4, 100);
+		p4 = new PathEntry(0, 0, 4, 100);
+		p5 = new PathEntry(0, 0, 4, 100);
+		p6 = new PathEntry(0, 0, 4, 100);
+		for (int i = 0; i < 2; ++i) {
+			path.push_back(*p1);
+			path.push_back(*p2);
+			path.push_back(*p3);
+			path.push_back(*p4);
+			path.push_back(*p5);
+			path.push_back(*p6);
+		}
 		spriteList.Remove(DiskSprite);
 		spriteList.Insert(QbertSprite);
 		MovingPathAnimation * diskAnimation = new MovingPathAnimation(path, "disk_Animation1");
