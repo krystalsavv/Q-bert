@@ -5,7 +5,7 @@
 #include "Animation.h"
 #include "AI.h"
 #include "Disk.h"
-
+#include "SoundManager.h"
 
 
 Game::Game(){
@@ -63,6 +63,10 @@ void Game::update() {
 }
 
 void Game::handleEvents() {
+	TheSoundManager::Instance()->load("Sounds/Hop.wav", "QbertHop", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "Bye", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		if (!((diskLeft &&  diskLeft->GetMoveTop()) || (diskRight &&  diskRight->GetMoveTop()))) {
@@ -75,6 +79,8 @@ void Game::handleEvents() {
 						//OR
 						//Here we lose
 						if (qbert->GetCurrRow() == 5 && diskRight->GetIsActive()) {
+							TheSoundManager::Instance()->playSound("Bye", 0);
+							TheSoundManager::Instance()->playSound("disk", 0);
 							diskRight->MoveUpRight();
 							qbert->MoveUpDiskRight();
 							qbert->Restore();
@@ -82,7 +88,6 @@ void Game::handleEvents() {
 						}
 
 						cout << "END OF GAME " << endl;
-
 						list<PathEntry> path;
 						PathEntry *p1 = new PathEntry(0, 0, 0, 0);
 						PathEntry *p2 = new PathEntry(0, 0, 1, 0);
@@ -106,7 +111,7 @@ void Game::handleEvents() {
 						qbert->SetZOrder(5);
 						spriteList.GetList().sort(compare);
 						qbertAnimator->Start(game->GetGameTime());
-
+						TheSoundManager::Instance()->playSound("QbertFalls", 0);
 						LifeDecrease();
 						if (GameLife <= 0) {
 							//End of game
@@ -120,6 +125,7 @@ void Game::handleEvents() {
 					}
 					else {
 						qbert->moveUpRight();
+						TheSoundManager::Instance()->playSound("QbertHop", 0);
 						terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 						cout << "Current active : " << terrain->currActive() << endl;
 						//	cout << "Position changed to : ";
@@ -154,7 +160,7 @@ void Game::handleEvents() {
 							spriteList.GetList().sort(compare);
 						}
 						qbertAnimator->Start(game->GetGameTime());
-
+						TheSoundManager::Instance()->playSound("QbertFalls", 0);
 						LifeDecrease();
 						if (GameLife <= 0) {
 							//End of game
@@ -166,6 +172,7 @@ void Game::handleEvents() {
 					}
 					else {
 						qbert->moveDownLeft();
+						TheSoundManager::Instance()->playSound("QbertHop", 0);
 						terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 						cout << "Current active : " << terrain->currActive() << endl;
 						//	cout << "Position changed to : ";
@@ -202,7 +209,7 @@ void Game::handleEvents() {
 							spriteList.GetList().sort(compare);
 						}
 						qbertAnimator->Start(game->GetGameTime());
-
+						TheSoundManager::Instance()->playSound("QbertFalls", 0);
 						LifeDecrease();
 						if (GameLife <= 0) {
 							//End of game
@@ -215,6 +222,7 @@ void Game::handleEvents() {
 					}
 					else {
 						qbert->moveDownRight();
+						TheSoundManager::Instance()->playSound("QbertHop", 0);
 						terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 						cout << "Current active : " << terrain->currActive() << endl;
 						//	cout << "Position changed to : ";
@@ -225,6 +233,8 @@ void Game::handleEvents() {
 				else if (event.key.keysym.sym == SDLK_LEFT) {
 					if (qbert->GetCurrCol() == 1) {
 						if (qbert->GetCurrRow() == 5 && diskLeft->GetIsActive()) {
+							TheSoundManager::Instance()->playSound("Bye", 0);
+							TheSoundManager::Instance()->playSound("disk", 0);
 							diskLeft->MoveUpLeft();
 							qbert->MoveUpDiskLeft();
 							qbert->Restore();
@@ -255,9 +265,11 @@ void Game::handleEvents() {
 						qbert->SetZOrder(5);
 						spriteList.GetList().sort(compare);
 						qbertAnimator->Start(game->GetGameTime());
+						TheSoundManager::Instance()->playSound("QbertFalls", 0);
 					}
 					else {
 						qbert->moveUpLeft();
+						TheSoundManager::Instance()->playSound("QbertHop", 0);
 						terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 						cout << "Current active : " << terrain->currActive() << endl;
 						//	cout << "Position changed to : ";
@@ -280,6 +292,7 @@ void Game::handleEvents() {
 
 void Game::clean() {
 	std::cout << "cleaning game\n";
+	TheSoundManager::Instance()->clearSoundMap();
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_Quit();

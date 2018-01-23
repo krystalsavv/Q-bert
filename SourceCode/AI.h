@@ -3,7 +3,7 @@
 #include <list>
 #include "Ball.h"
 #include "Animation.h"
-
+#include "SoundManager.h"
 
 
 class Snake {
@@ -290,6 +290,8 @@ class MovingPathAnimatorAI : public MovingPathAnimator {
 	list<int> ColList;
 public:
 	virtual bool Progress(unsigned long currTime) {
+		TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
+		TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
 		assert(currPathFrame);
 		assert(anim);
 		assert(sprite);
@@ -299,7 +301,6 @@ public:
 			sprite->Move(currPathFrame->dx, currPathFrame->dy);
 			sprite->SetFrame(currPathFrame->frame);
 			lastTime += currPathFrame->delay;
-
 			if (!(currPathFrame->dx) && !(currPathFrame->dy) && !(currPathFrame->frame) && !(currPathFrame->delay)) {
 				assert(!ColList.empty());
 				if (!(sprite->GetId().compare("SnakeBall"))) {
@@ -314,9 +315,9 @@ public:
 				game->GetBall(sprite)->UpdateRowCol(row, col);
 			//	cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
 				}
+				TheSoundManager::Instance()->playSound("Ball", 0);
 				ColList.pop_front();
 			}
-
 			if (currPathFrame == anim->GetEndPathFrame()) {
 				if (cont)
 					currPathFrame = anim->GetStartPathFrame();
@@ -375,7 +376,8 @@ class AI {
 public:
 	void logic(unsigned long currTime) {
 		srand(time(0));
-
+		TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
+		TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
 		if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_READY) { // ksekinaei to fidi
 			snake->GetSnakeSprite()->GetDestinationRect().x = snake->GetSprite()->GetDestinationRect().x;
 			snake->GetSnakeSprite()->GetDestinationRect().y = snake->GetSprite()->GetDestinationRect().y;
@@ -412,7 +414,6 @@ public:
 				}
 				p = new PathEntry(0, 28, 4, 70);
 				path.push_back(*p);
-
 				for (int i = 0; i < 5; ++i) {
 					if (rand() % 2) {				// aristera
 						PathEntry *p1 = new PathEntry(0, 0, 5, 150);
@@ -465,7 +466,6 @@ public:
 				snake->SetAnimation(SnakeBallAnimation);
 				snake->SetAnimator(SnakeBallAnimator);
 				snake->GetAnimator()->Start(game->GetGameTime());
-
 
 				list<PathEntry> path2;
 				PathEntry *p2;
@@ -545,7 +545,6 @@ public:
 						path.push_back(*p);
 						ColList.push_back(0);
 						path.push_back(*p3);
-
 					}
 					else {							//deksia
 						//p = new PathEntry(50, 74, 1, 1000);
@@ -568,7 +567,6 @@ public:
 						path.push_back(*p);
 						ColList.push_back(1);
 						path.push_back(*p3);
-
 					}
 				}
 				for (int i = 0; i < 10; ++i) {
@@ -584,7 +582,7 @@ public:
 				ballAnim->GetBallAnimator()->Start(game->GetGameTime());
 				sum++;
 			}
-
+			TheSoundManager::Instance()->playSound("Ball", 0);
 			lastTime += delay;
 		}
 	}
@@ -613,6 +611,7 @@ public:
 		snake = nullptr;
 		lastTime = t;
 	}
+
 };
 
 
