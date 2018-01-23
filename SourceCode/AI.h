@@ -134,32 +134,87 @@ public:
 			}
 		}
 		SnakeAnimation->SetPath(path);
-	//	cout << "Snake Position curr: " << currRow << "  " << currCol << "   prev: " << prevRow << " " << prevCol << endl;
+		cout << "Snake Position curr: " << currRow << "  " << currCol << "   prev: " << prevRow << " " << prevCol << endl;
 	}
 
 
 	void pathUpRight(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 2, 150); 
+		
+		PathEntry *p1 = new PathEntry(0, 0, 3, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 3, 200);
+		PathEntry *p5 = new PathEntry(0, -20, 3, 200);
+		PathEntry *p6 = new PathEntry(0, -50, 3, 200);
+		PathEntry *p2 = new PathEntry(50, -5, 3, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 3, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(50, -74, 1, 1000);
+		p = new PathEntry(0, 0, 3, 200);
 		path->push_back(*p);
+
 	}
 	void pathUpLeft(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 0, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 1, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 1, 200);
+		PathEntry *p5 = new PathEntry(0, -20, 1, 200);
+		PathEntry *p6 = new PathEntry(0, -50, 1, 200);
+		PathEntry *p2 = new PathEntry(-50, -5, 1, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 1, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
+		
+		 
 		path->push_back(*p);
-		p = new PathEntry(-50, -74, 1, 1000);
+		p = new PathEntry(0, 0, 1, 200);
 		path->push_back(*p);
 	}
 	void pathDownLeft(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 6, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 7, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 7, 200);
+		PathEntry *p5 = new PathEntry(0, -30, 7, 200);
+		PathEntry *p6 = new PathEntry(-40, 0, 7, 200);
+		PathEntry *p2 = new PathEntry(-10, 105, 7, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 7, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(-50, 74, 1, 1000);
+		p = new PathEntry(0, 0, 7, 200);
 		path->push_back(*p);
 	}
 	void pathDownRight(list<PathEntry>* path) {
-		PathEntry *p = new PathEntry(0, 0, 5, 1000); 
+		PathEntry *p = new PathEntry(0, 0, 4, 200);
+
+		PathEntry *p1 = new PathEntry(0, 0, 5, 200);
+		PathEntry *p4 = new PathEntry(0, 0, 5, 200);
+		PathEntry *p5 = new PathEntry(0, -30, 5, 200);
+		PathEntry *p6 = new PathEntry(40, 0, 6, 200);
+		PathEntry *p2 = new PathEntry(10, 105, 5, 200);
+		PathEntry *p3 = new PathEntry(0, 0, 5, 200);
+		path->push_back(*p1);
+		path->push_back(*p4);
+		path->push_back(*p5);
+		path->push_back(*p6);
+		path->push_back(*p2);
+		path->push_back(*p3);
 		path->push_back(*p);
-		p = new PathEntry(50, 74, 1, 1000);
+		p = new PathEntry(0,0, 5, 200);
 		path->push_back(*p);
 	}
 

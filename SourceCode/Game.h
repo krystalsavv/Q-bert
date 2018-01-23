@@ -17,13 +17,20 @@ class Sprite;
 
 class Game {
 	unsigned long currTime = 0;
+	enum game_states {
+		PAUSE = 0,
+		PLAY = 1,
+		GAMEOVER = 2
+	};
 public:
 	IsometricPyramid * terrain;
 	Qbert *qbert;
 	Disk *diskLeft;
 	Disk *diskRight;
 	AI *ai;
+	game_states game_state;
 	unsigned int GameLife = 3;
+	unsigned int decreaseStop = 0;
 	Game();
 	~Game();
 	void LifeDecrease();
@@ -33,6 +40,7 @@ public:
 	void update();
 	void handleEvents();
 	void clean();
+	void Collision();
 	void SetSprite(	IsometricPyramid *terrain,
 					Qbert *qbert,
 					Disk *diskLeft,
