@@ -58,7 +58,8 @@ void Game::render() {
 
 void Game::update() {
 	ai->logic(GetGameTime());
-	spriteList.Collision(qbert->GetSprite());
+	qbert->GetSprite();
+//	spriteList.Collision(qbert->GetSprite());
 	AnimatorHolder::Progress(currTime);
 }
 
@@ -322,6 +323,13 @@ void Game::SetDiskRightMoveTop(bool b) {
 
 void Game::SetDiskLeftMoveTop(bool b) {
 	diskLeft->SetMoveTop(false);
+}
+
+bool Game::GetSnakeIsBall() {
+	return ai->GetSnake()->GetIsBall();
+}
+void Game::SetSnakeIsBall(bool b) {
+	ai->GetSnake()->SetIsBall(b);
 }
 
 

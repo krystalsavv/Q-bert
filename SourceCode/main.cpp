@@ -25,6 +25,7 @@ int main(int argc, char* args[]) {
 	game = new Game();
 	game->init("Q*bert", 200, 40, 800, 700, 0);
 
+
 	IsometricPyramid *terrain = new IsometricPyramid(400, 80, 7, 26,74);
 	Qbert *qbert = new Qbert(377,56);
 	Disk *diskLeft = new Disk("DiskLeft", 70, 350);

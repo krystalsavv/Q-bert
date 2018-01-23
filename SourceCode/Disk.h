@@ -4,8 +4,6 @@
 #include "Animation.h"
 
 
-
-
 class MovingPathAnimatorDisk : public MovingPathAnimator {
 public:
 	virtual bool Progress(unsigned long currTime) {
@@ -58,6 +56,8 @@ class Disk {
 	Sprite *QbertSprite;
 	bool moveTop; 
 	bool isActive;
+	bool snakeLeft;
+	bool snakeRight;
 public:
 	void Create(string id, int x, int y) {
 		AnimationFilm* DiskFilm = GetFilm();								// fortonei to film tou aplou diskou 
@@ -89,6 +89,7 @@ public:
 	void MoveUpLeft() {
 		moveTop = true;
 		isActive = false;
+		SetSnakeLeft(true);
 		std::list<PathEntry> path;
 		PathEntry * p = new PathEntry(-100, 0, 0, 10);
 		path.push_back(*p);
@@ -118,7 +119,7 @@ public:
 	void MoveUpRight() {
 		moveTop = true;
 		isActive = false;
-
+		SetSnakeRight(true);
 		std::list<PathEntry> path;
 		PathEntry * p = new PathEntry(0, 0, 0, 500);
 		path.push_back(*p);
@@ -146,6 +147,20 @@ public:
 
 	void SetMoveTop(bool b) {
 		moveTop = b;
+	}
+	void SetSnakeLeft(bool b) {
+		if ((b && game->GetSnake() && game->GetSnakeIsBall()) || (b && !(game->GetSnake()))) return;
+		snakeLeft = b;
+	}
+	void SetSnakeRight(bool b) {
+		if ((b && game->GetSnake() && game->GetSnakeIsBall()) || (b && !(game->GetSnake()))) return;
+		snakeRight = b;
+	}
+	bool GetSnakeLeft() {
+		return snakeLeft;
+	}
+	bool GetSnakeRight() {
+		return snakeRight;
 	}
 	bool GetMoveTop() {
 		return moveTop;
@@ -237,12 +252,16 @@ public:
 		Create(id, x, y);
 		moveTop = false;
 		isActive = true;
+		snakeLeft = false;
+		snakeRight = false;
 	}
 
 	Disk(char *id, int x, int y) {
 		Create(id, x, y);
 		moveTop = false;
 		isActive = true;
+		snakeLeft = false;
+		snakeRight = false;
 	}
 };
 

@@ -3,6 +3,7 @@
 #include <list>
 #include "Ball.h"
 #include "Animation.h"
+#include "Disk.h"
 
 
 
@@ -13,10 +14,12 @@ class Snake {
 	MovingPathAnimator* Animator;
 	MovingPathAnimation* SnakeAnimation;
 	MovingPathAnimator* SnakeAnimator;
+	list<int> ColList;
 	int currRow;
 	int currCol;
 	int prevRow;
 	int prevCol;
+	bool isBall;
 public:
 	void Create(int x, int y) {
 		AnimationFilm* film = GetFilmBall();
@@ -66,7 +69,14 @@ public:
 	void SetSnakeAnimator(MovingPathAnimator* a) {
 		SnakeAnimator = a;
 	}
+	void SetColList(list<int>& ColList) {
+		assert((this->ColList.empty()));
+		this->ColList.assign(ColList.begin(), ColList.end());
+	}
 
+	list<int> GetColList() {
+		return ColList;
+	}
 	int GetCurrRow() {
 		return currRow;
 	}
@@ -101,8 +111,81 @@ public:
 	void SnakeAI() {
 		int qbertRow = game->qbert->GetCurrRow();
 		int qbertCol = game->qbert->GetCurrCol();
-		
 		list<PathEntry> path;
+		if (game->diskLeft->GetSnakeLeft()) {
+			qbertRow = 5;
+			qbertCol = 1;
+			if (currCol == 1 && currRow == 5) {
+				cout << "RIP SNAKE LEFT";
+				//jump left
+				list<PathEntry> path;
+				PathEntry *p1 = new PathEntry(0, 0, 5, 0);
+				PathEntry *p2 = new PathEntry(-6, 0, 5, 0);
+				PathEntry *p3 = new PathEntry(-20, -70, 5, 100);
+				PathEntry *p4 = new PathEntry(-40, 0, 5, 70);
+				PathEntry *p5 = new PathEntry(-10, 105, 5, 50);
+				PathEntry *p6 = new PathEntry(0, 0, 5, 0);
+				path.push_back(*p1);
+				path.push_back(*p2);
+				path.push_back(*p3);
+				path.push_back(*p4);
+				path.push_back(*p5);
+				path.push_back(*p6);
+				PathEntry *p;
+				for (int i = 0; i < 30; ++i) {
+					p = new PathEntry(0, 25,5, 60);
+					path.push_back(*p);
+				}
+
+				SnakeSprite->SetZOrder(5);
+				spriteList.GetList().sort(compare);
+				SnakeAnimation->SetPath(path);
+				currCol = 0;
+				return;
+			}
+			else if (currCol == 0) {
+				game->diskLeft->SetSnakeLeft(false);
+				Animator->SetState(ANIMATOR_READY);
+				return;
+			}
+		}
+		else if (game->diskRight->GetSnakeRight()) {
+			qbertRow = 5;
+			qbertCol = 5;
+			if (currCol == 5 && currRow == 5) {
+				//jump left
+				list<PathEntry> path;
+				PathEntry *p1 = new PathEntry(0, 0, 5, 0);
+				PathEntry *p2 = new PathEntry(0, 0, 5, 0);
+				PathEntry *p3 = new PathEntry(20, -30, 5, 100);
+				PathEntry *p4 = new PathEntry(0, -20, 5, 70);
+				PathEntry *p5 = new PathEntry(40, -5, 5, 50);
+				PathEntry *p6 = new PathEntry(0, 0, 5, 0);
+				path.push_back(*p1);
+				path.push_back(*p2);
+				path.push_back(*p3);
+				path.push_back(*p4);
+				path.push_back(*p5);
+				path.push_back(*p6);
+				PathEntry *p;
+				for (int i = 0; i < 30; ++i) {
+					p = new PathEntry(0, 25, 1, 60);
+					path.push_back(*p);
+				}
+				SnakeSprite->SetZOrder(5);
+				spriteList.GetList().sort(compare);
+				SnakeAnimation->SetPath(path);
+				currCol = 0;
+				return;
+			}
+			else if (currCol == 0) {
+				game->diskRight->SetSnakeRight(false);
+				Animator->SetState(ANIMATOR_READY);
+				return;
+			}
+		}
+
+
 		if (currRow >= qbertRow) {
 			if (currCol <= qbertCol) {
 				pathUpRight(&path);
@@ -134,7 +217,7 @@ public:
 			}
 		}
 		SnakeAnimation->SetPath(path);
-	//	cout << "Snake Position curr: " << currRow << "  " << currCol << "   prev: " << prevRow << " " << prevCol << endl;
+		cout << "Snake Position curr: " << currRow << "  " << currCol << "   prev: " << prevRow << " " << prevCol << endl;
 	}
 
 
@@ -163,6 +246,12 @@ public:
 		path->push_back(*p);
 	}
 
+	void SetIsBall(bool b) {
+		isBall = b;
+	}
+	bool GetIsBall() {
+		return isBall;
+	}
 
 	void Destroy() {} 
 
@@ -261,8 +350,6 @@ public:
 	}
 
 	void Reset() {
-		// den to exw ylopoihsei opote xtypaei assert gia na doume pws tha ginei
-		assert(0);   
 		currRow = 8; // na dw poia prpei na einai h arxikh timh
 		currCol = 8; //
 	}
@@ -282,6 +369,7 @@ public:
 		currCol = 8;
 		prevRow = 8;
 		prevCol = 8;
+		isBall = true;
 	}
 };
 
@@ -379,24 +467,29 @@ public:
 		if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_READY) { // ksekinaei to fidi
 			snake->GetSnakeSprite()->GetDestinationRect().x = snake->GetSprite()->GetDestinationRect().x;
 			snake->GetSnakeSprite()->GetDestinationRect().y = snake->GetSprite()->GetDestinationRect().y;
+			snake->SetIsBall(false);
 			spriteList.Insert(snake->GetSnakeSprite());
 			spriteList.Remove(snake->GetSprite()); 
 			snake->GetSnakeAnimator()->Start(game->GetGameTime());
 		}
-		else if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_FINISHED) { // AI for snake
+		else if (snake && snake->GetAnimator()->GetState() == ANIMATOR_FINISHED && snake->GetSnakeAnimator()->GetState() == ANIMATOR_FINISHED) { // AI for snake			
 			snake->SnakeAI();
-			snake->GetSnakeAnimator()->Start(game->GetGameTime());
+			if(snake->GetAnimator()->GetState() != ANIMATOR_READY) 
+				snake->GetSnakeAnimator()->Start(game->GetGameTime());
 			// tha to kanw ayto gia na ksexwrizw tis periptwseis
 			// tha ANIMATOR_READY to sprite ths ball otan rip to snake
 			// alliws tha to exw ANIMATOR_FINISHED opote tote to snake zei kai ananewnei path gia na "piasei" ton qbert
 			//snake->GetAnimator()->SetState(ANIMATOR_READY);
 		}
+		if (snake && snake->GetAnimator()->GetState() == ANIMATOR_READY && snake->GetSnakeAnimator()->GetState() == ANIMATOR_FINISHED) {
+			// mporw na bgazw kai snake apo list kai na kanw null kai na ta kanei ola apo thn arxh se syndiasmo  me to apokatw(else if)				
+			//spriteList.Remove(snake->GetSnakeSprite());
+			snake->GetSnakeAnimator()->SetState(ANIMATOR_READY);
+		}
 
 		while (currTime > lastTime && currTime - lastTime >= delay && (BallsWithState(ANIMATOR_RUNNING)+ BallsWithState(ANIMATOR_READY)) < 3 ){
 			int col = rand() % 2 + 1;
 			BallAnim* ballAnim = nullptr;
-			
-			
 
 			if (!snake) {
 				list<int> ColList;
@@ -460,6 +553,7 @@ public:
 				p = new PathEntry(-4, 0, 4, 200);
 				path.push_back(*p);
 
+				snake->SetColList(ColList);
 				MovingPathAnimation* SnakeBallAnimation = new MovingPathAnimation(path, "Snake1");
 				MovingPathAnimatorAI* SnakeBallAnimator = new MovingPathAnimatorAI(snake->GetSprite(), SnakeBallAnimation, ColList); /////
 				snake->SetAnimation(SnakeBallAnimation);
@@ -479,20 +573,98 @@ public:
 				snake->SetSnakeAnimation(SnakeAnimation);
 				snake->SetSnakeAnimator(SnakeAnimator);
 			}
-			else if (snake->GetAnimator()->GetState() == ANIMATOR_READY && snake->GetSnakeAnimator()->GetState() == ANIMATOR_FINISHED) {
-				// mporw na bgazw kai snake apo list kai na kanw null kai na ta kanei ola apo thn arxh se syndiasmo  me to apokatw(else if)
-				snake->Reset();
-				snake->GetSnakeAnimator()->SetState(ANIMATOR_READY);
-			}
-			else if (snake->GetAnimator()->GetState() == ANIMATOR_READY) { // an kathysterei poly ta kanw ena me to apopanw
-				spriteList.Insert(snake->GetSprite());
-				spriteList.Remove(snake->GetSnakeSprite());
+			else if (snake->GetAnimator()->GetState() == ANIMATOR_READY && snake->GetSnakeAnimator()->GetState() == ANIMATOR_READY) { // an kathysterei poly ta kanw ena me to apopanw
+				/*spriteList.Insert(snake->GetSprite());
+				//spriteList.Remove(snake->GetSnakeSprite()); // to exw bgalei hdh
 				snake->SetBallX(330 + ((col - 1) * 100));
 				snake->SetBallY(0);
 				snake->SetCurrRow(8);
 				snake->SetCurrCol(8);
 				snake->UpdateRowCol(2, col);
+				list<int> ColList = snake->GetColList();
+				MovingPathAnimatorAI * anim = dynamic_cast<MovingPathAnimatorAI*>(snake->GetAnimator());
+				anim->SetColList(ColList);
+				snake->GetAnimator()->Start(game->GetGameTime());*/
+				list<int> ColList;
+				snake = new Snake(330 + ((col - 1) * 100), 0);
+				snake->UpdateRowCol(2, col);
+				list<PathEntry> path;
+				PathEntry *p;
+				p = new PathEntry(0, 0, 5, 0);  // current position
+				path.push_back(*p);
+				for (int i = 0; i < 4; ++i) {
+					p = new PathEntry(0, 28, 5, 70);
+					path.push_back(*p);
+				}
+				p = new PathEntry(0, 28, 4, 70);
+				path.push_back(*p);
+
+				for (int i = 0; i < 5; ++i) {
+					if (rand() % 2) {				// aristera
+						PathEntry *p1 = new PathEntry(0, 0, 5, 150);
+						PathEntry *p4 = new PathEntry(0, 0, 5, 150);
+						PathEntry *p5 = new PathEntry(0, -30, 5, 150);
+						PathEntry *p6 = new PathEntry(-40, 0, 5, 150);
+						PathEntry *p2 = new PathEntry(-10, 105, 5, 150);
+						PathEntry *p3 = new PathEntry(0, 0, 4, 500);
+						PathEntry *p = new PathEntry(0, 0, 0, 0);
+						path.push_back(*p1);
+						path.push_back(*p4);
+						path.push_back(*p5);
+						path.push_back(*p6);
+						path.push_back(*p2);
+						path.push_back(*p3);
+						path.push_back(*p);
+						ColList.push_back(0);
+					}
+					else {
+						PathEntry *p1 = new PathEntry(0, 0, 5, 150);
+						PathEntry *p4 = new PathEntry(0, 0, 5, 150);
+						PathEntry *p5 = new PathEntry(0, -30, 5, 150);
+						PathEntry *p6 = new PathEntry(40, 0, 5, 150);
+						PathEntry *p2 = new PathEntry(10, 105, 5, 150);
+						PathEntry *p3 = new PathEntry(0, 0, 4, 500);
+						PathEntry *p = new PathEntry(0, 0, 0, 0);
+						path.push_back(*p1);
+						path.push_back(*p4);
+						path.push_back(*p5);
+						path.push_back(*p6);
+						path.push_back(*p2);
+						path.push_back(*p3);
+						path.push_back(*p);
+						ColList.push_back(1);
+					}
+				}
+
+				p = new PathEntry(-4, 0, 4, 200);
+				for (int i = 0; i < 5; ++i) {
+					p = new PathEntry(-8, 0, 4, 200);
+					path.push_back(*p);
+					p = new PathEntry(8, 0, 4, 200);
+					path.push_back(*p);
+				}
+				p = new PathEntry(-4, 0, 4, 200);
+				path.push_back(*p);
+
+				snake->SetColList(ColList);
+				MovingPathAnimation* SnakeBallAnimation = new MovingPathAnimation(path, "Snake1");
+				MovingPathAnimatorAI* SnakeBallAnimator = new MovingPathAnimatorAI(snake->GetSprite(), SnakeBallAnimation, ColList); /////
+				snake->SetAnimation(SnakeBallAnimation);
+				snake->SetAnimator(SnakeBallAnimator);
 				snake->GetAnimator()->Start(game->GetGameTime());
+
+
+				list<PathEntry> path2;
+				PathEntry *p2;
+				p2 = new PathEntry(0, 0, 4, 500);
+				path2.push_back(*p2);
+				p2 = new PathEntry(0, 0, 5, 500);
+				path2.push_back(*p2);
+
+				MovingPathAnimation* SnakeAnimation = new MovingPathAnimation(path2, "Snake2");
+				MovingPathAnimator* SnakeAnimator = new MovingPathAnimator(snake->GetSnakeSprite(), SnakeAnimation);
+				snake->SetSnakeAnimation(SnakeAnimation);
+				snake->SetSnakeAnimator(SnakeAnimator);
 			}
 			else if (BallsWithState(ANIMATOR_FINISHED)) {    // + BallsWithState(ANIMATOR_STOPPED)
 				for (auto i = Balls.begin(); i != Balls.end(); ++i) {

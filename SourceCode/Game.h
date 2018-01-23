@@ -45,6 +45,8 @@ public:
 	AI* GetAI();
 	Snake * GetSnake();
 	Ball * GetBall(Sprite *s);
+	bool GetSnakeIsBall();
+	void SetSnakeIsBall(bool b);
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();
