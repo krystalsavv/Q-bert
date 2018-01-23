@@ -8,13 +8,14 @@
 
 
 
-Game::Game(){
+
+Game::Game() {
 	m_pWindow = nullptr;
 	m_pRenderer = nullptr;
 	m_bRunning = true;
 }
 
-Game::~Game(){}
+Game::~Game() {}
 
 void Game::LifeDecrease() {
 	if (decreaseStop == 0) {
@@ -25,15 +26,15 @@ void Game::LifeDecrease() {
 }
 
 
-bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags){
-	TheSoundManager::Instance()->load("Sounds/Hop.wav","Qberthop",SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/QbertFall.wav","QbertFalls",SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/ByeBye.wav","bye",SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/disk.wav","disk",SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/BallHop.wav","Ball",SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/snakeHop","Snake",SOUND_SFX);
+bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags) {
+	/*TheSoundManager::Instance()->load("Sounds/Hop.wav", "Qberthop", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "bye", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/snakeHop", "Snake", SOUND_SFX);*/
 	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
-		
+
 		game_state = PLAY;
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
@@ -62,7 +63,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 
 
 void Game::render() {
-	
+
 	switch (game_state) {
 	case PLAY:
 		SDL_RenderClear(m_pRenderer);
@@ -76,7 +77,7 @@ void Game::render() {
 	}
 }
 
-bool DoBoxesIntersect(Sprite* a,Sprite* b) {
+bool DoBoxesIntersect(Sprite* a, Sprite* b) {
 	return (abs(a->GetDestinationRect().x - b->GetDestinationRect().x) * 2 < (a->GetDestinationRect().w + b->GetDestinationRect().w)) &&
 		(abs(a->GetDestinationRect().y - b->GetDestinationRect().y) * 2 < (a->GetDestinationRect().h + b->GetDestinationRect().h));
 }
@@ -92,16 +93,16 @@ void Game::Collision() {
 	}
 	}*/
 
-	
+
 
 
 	for (auto i = spriteList.GetList().begin(); i != spriteList.GetList().end(); ++i) {
-		
-	
+
+
 		/*colission with ball*/
 		if (!((*i)->GetId().compare(0, 4, "Ball"))) {
-			
-			if (DoBoxesIntersect(qbert->GetSprite(),(*i) ) ) {
+
+			if (DoBoxesIntersect(qbert->GetSprite(), (*i))) {
 				cout << "Colission with ball" << endl;
 			}
 
@@ -112,7 +113,7 @@ void Game::Collision() {
 
 			if (DoBoxesIntersect(qbert->GetSprite(), (*i)) &&
 				ai->GetSnake()->GetCurrCol() == qbert->GetCurrCol() &&
-				ai->GetSnake()->GetCurrRow() == qbert->GetCurrRow() ) {
+				ai->GetSnake()->GetCurrRow() == qbert->GetCurrRow()) {
 				cout << "Colission with Snake" << endl;
 			}
 
@@ -121,7 +122,7 @@ void Game::Collision() {
 }
 
 void Game::update() {
-	
+
 	switch (game_state) {
 	case PLAY:
 		ai->logic(GetGameTime());
@@ -138,7 +139,7 @@ void Game::update() {
 
 void Game::handleEvents() {
 	switch (game_state) {
-		case PLAY:
+	case PLAY:
 
 
 		SDL_Event event;
@@ -153,8 +154,8 @@ void Game::handleEvents() {
 							//OR
 							//Here we lose
 							if (qbert->GetCurrRow() == 5 && diskRight->GetIsActive()) {
-								TheSoundManager::Instance()->playsound("bye",0);
-								TheSoundManager::Instance()->playsound("disk",0);
+								//TheSoundManager::Instance()->playsound("bye", 0);
+								//TheSoundManager::Instance()->playsound("disk", 0);
 								diskRight->MoveUpRight();
 								qbert->MoveUpDiskRight();
 								qbert->Restore();
@@ -186,7 +187,7 @@ void Game::handleEvents() {
 							qbert->SetZOrder(5);
 							spriteList.GetList().sort(compare);
 							qbertAnimator->Start(game->GetGameTime());
-							TheSoundManager::Instance()->playsound("QbertFalls",0);
+							//TheSoundManager::Instance()->playsound("QbertFalls", 0);
 							LifeDecrease();
 							if (GameLife <= 0) {
 								//End of game
@@ -200,7 +201,7 @@ void Game::handleEvents() {
 						}
 						else {
 							qbert->moveUpRight();
-							TheSoundManager::Instance()->playsound("Qberthop",0);
+							//TheSoundManager::Instance()->playsound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Qbert Position changed to : ";
@@ -247,7 +248,7 @@ void Game::handleEvents() {
 						}
 						else {
 							qbert->moveDownLeft();
-							TheSoundManager::Instance()->playsound("Qberthop",0);
+							//TheSoundManager::Instance()->playsound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Qbert Position changed to : ";
@@ -290,14 +291,16 @@ void Game::handleEvents() {
 								//End of game
 							}
 							else {
-								//move to start
+								
+								
+
 							}
 
 
 						}
 						else {
 							qbert->moveDownRight();
-							TheSoundManager::Instance()->playsound("Qberthop",0);
+							//TheSoundManager::Instance()->playsound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "qbert Position changed to : ";
@@ -308,8 +311,8 @@ void Game::handleEvents() {
 					else if (event.key.keysym.sym == SDLK_LEFT) {
 						if (qbert->GetCurrCol() == 1) {
 							if (qbert->GetCurrRow() == 5 && diskLeft->GetIsActive()) {
-								TheSoundManager::Instance()->playsound("bye",0);
-								TheSoundManager::Instance()->playsound("disk",0);
+								//TheSoundManager::Instance()->playsound("bye", 0);
+								//TheSoundManager::Instance()->playsound("disk", 0);
 								diskLeft->MoveUpLeft();
 								qbert->MoveUpDiskLeft();
 								qbert->Restore();
@@ -343,7 +346,7 @@ void Game::handleEvents() {
 						}
 						else {
 							qbert->moveUpLeft();
-							TheSoundManager::Instance()->playsound("Qberthop",0);
+							//TheSoundManager::Instance()->playsound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Position changed to : ";
@@ -361,11 +364,11 @@ void Game::handleEvents() {
 				}
 			}
 		}
-		
-		case PAUSE:
-			break;
-		case GAMEOVER:
-			break;
+
+	case PAUSE:
+		break;
+	case GAMEOVER:
+		break;
 		break;
 	}
 }
@@ -375,7 +378,7 @@ void Game::clean() {
 	std::cout << "cleaning game\n";
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
-	TheSoundManager::Instance()->clearSoundMap();
+	//TheSoundManager::Instance()->clearSoundMap();
 	SDL_Quit();
 }
 
@@ -384,7 +387,7 @@ SDL_Renderer* Game::GetRenderer() {
 }
 
 
-void Game::SetSprite(IsometricPyramid *terrain,Qbert *qbert,Disk *diskLeft,Disk *diskRight, AI *ai) {
+void Game::SetSprite(IsometricPyramid *terrain, Qbert *qbert, Disk *diskLeft, Disk *diskRight, AI *ai) {
 	this->terrain = terrain;
 	this->qbert = qbert;
 	this->diskLeft = diskLeft;
