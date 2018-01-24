@@ -17,12 +17,8 @@ Game::Game() {
 
 Game::~Game() {}
 
-void Game::LifeDecrease() {
-	if (decreaseStop == 0) {
-		GameLife--;
-		cout << "Life decreased to : " << GameLife;
-		decreaseStop++;
-	}
+void Game::LoseLife() {
+	lose = true;
 }
 
 
@@ -83,27 +79,14 @@ bool DoBoxesIntersect(Sprite* a, Sprite* b) {
 }
 
 void Game::Collision() {
-	/*if (ai->GetSnake()) {
-	if ( (ai->GetSnake()->GetCurrCol() == qbert->GetCurrCol() ) && ( ai->GetSnake()->GetCurrRow() == qbert->GetCurrRow() ) ) {
-
-	cout << "Colision with Snake " << endl;
-	LifeDecrease();
-
-
-	}
-	}*/
-
-
-
-
 	for (auto i = spriteList.GetList().begin(); i != spriteList.GetList().end(); ++i) {
-
 
 		/*colission with ball*/
 		if (!((*i)->GetId().compare(0, 4, "Ball"))) {
 
 			if (DoBoxesIntersect(qbert->GetSprite(), (*i))) {
 				cout << "Colission with ball" << endl;
+				LoseLife();
 			}
 
 
@@ -115,6 +98,7 @@ void Game::Collision() {
 				ai->GetSnake()->GetCurrCol() == qbert->GetCurrCol() &&
 				ai->GetSnake()->GetCurrRow() == qbert->GetCurrRow()) {
 				cout << "Colission with Snake" << endl;
+				LoseLife();
 			}
 
 		}
@@ -187,16 +171,7 @@ void Game::handleEvents() {
 							spriteList.GetList().sort(compare);
 							qbertAnimator->Start(game->GetGameTime());
 							//TheSoundManager::Instance()->playsound("QbertFalls", 0);
-							LifeDecrease();
-							if (GameLife <= 0) {
-								//End of game
-							}
-							else {
-								path.clear();
-
-								//move to start
-							}
-
+							LoseLife();
 						}
 						else {
 							qbert->moveUpRight();
@@ -235,15 +210,7 @@ void Game::handleEvents() {
 								spriteList.GetList().sort(compare);
 							}
 							qbertAnimator->Start(game->GetGameTime());
-
-							LifeDecrease();
-							if (GameLife <= 0) {
-								//End of game
-							}
-							else {
-								//move to start
-							}
-
+							LoseLife();
 						}
 						else {
 							qbert->moveDownLeft();
@@ -285,15 +252,7 @@ void Game::handleEvents() {
 							}
 							qbertAnimator->Start(game->GetGameTime());
 
-							LifeDecrease();
-							if (GameLife <= 0) {
-								//End of game
-							}
-							else {
-								
-								
-
-							}
+							LoseLife();
 
 
 						}
@@ -342,6 +301,7 @@ void Game::handleEvents() {
 							qbert->SetZOrder(5);
 							spriteList.GetList().sort(compare);
 							qbertAnimator->Start(game->GetGameTime());
+							LoseLife();
 						}
 						else {
 							qbert->moveUpLeft();
@@ -425,6 +385,35 @@ bool Game::GetSnakeIsBall() {
 }
 void Game::SetSnakeIsBall(bool b) {
 	ai->GetSnake()->SetIsBall(b);
+}
+
+void Game::Lose() {
+	spriteList;
+	AnimatorHolder::CleanAnimatorHolder();
+	auto i = spriteList.GetList().begin();
+	while (!spriteList.GetList().empty() && i != spriteList.GetList().end()) {
+		auto prev = i;
+		++i;
+		if ((*prev)->GetId().compare(0, 4, "cube") && (*prev)->GetId().compare(0, 4, "Disk") && (*prev)->GetId().compare("Qbert")){
+			spriteList.Remove(*prev);
+		}		
+		else if (!((*prev)->GetId().compare("Qbert"))) {
+			//(*prev)->SetZOrder(20);
+		}
+	}
+	game->ai->SnakeNull();
+	ai->ClearBalls();
+	//qbert->moveToStart();
+}
+
+void Game::Restart() {
+	lose = false;
+//	qbert->SetZOrder(20);
+}
+
+void Game::SetQbertToStart() {
+	qbert->SetZOrder(20);
+	qbert->moveToStart();
 }
 
 

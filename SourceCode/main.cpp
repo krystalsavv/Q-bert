@@ -36,13 +36,21 @@ int main(int argc, char* args[]) {
 
 	AI* ai = new AI(game->GetGameTime());
 	game->SetSprite(terrain, qbert, diskLeft, diskRight, ai);
-	
+	unsigned count = 0;
 	while (game->running()) {
 		game->SetGameTime();
 		game->handleEvents();
 		game->update();
-		game->render();
+		//if (!game->lose) {
+			game->render();
+	//	}
 		game->Collision();
+		if (game->lose) {
+			(game->GameLife)--;
+			game->Lose();
+			if (!(game->GameLife)) break;			
+			game->Restart();			
+		}
 	}
 	game->clean();
 	return 0;

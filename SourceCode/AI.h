@@ -830,6 +830,17 @@ public:
 		return nullptr;
 	}
 
+	void SnakeNull() {
+		snake = nullptr;
+	}
+
+	void ClearBalls() {
+		for (auto i = Balls.begin(); i != Balls.end(); ++i) {
+			(*i)=nullptr;
+		}
+		Balls.clear();
+	}
+
 	AI(unsigned long t) {
 		snake = nullptr;
 		lastTime = t;
