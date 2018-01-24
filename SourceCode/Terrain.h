@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <string>
 #include "Sprites.h"
+#include "Animation.h"
 
 class IsometricPyramid final {
 	vector<CubeSprite*> sprites;
@@ -12,6 +13,7 @@ class IsometricPyramid final {
 	unsigned totalRows;
 	unsigned h1;
 	unsigned h2;
+	std::list<PathEntry> path;
 	unsigned int activeCubes = 0;
 	unsigned iso_cube_y(unsigned row) {
 		return Py + (row - 1) * h2;
@@ -63,6 +65,7 @@ public:
 			if (sprites[i]->getCol() == col1 && sprites[i]->getRow() == row1) {
 				if (!sprites[i]->isActive()) {
 					sprites[i]->SetActive();
+					//sprites[i]->SetFrame(2);
 					activeCubes++;
 				}
 
@@ -70,6 +73,28 @@ public:
 		}
 	}
 
+	void Epilipsia1() {
+		
+		for (unsigned i = 0; i < sprites.size(); i++) {
+			
+			PathEntry *p2 = new PathEntry(0, 0, 4, 100);
+			PathEntry *p3 = new PathEntry(0, 0, 2, 100);
+		
+			
+				path.push_back(*p2);
+				path.push_back(*p3);
+			
+			
+			MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "Terrain"+i);
+			MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprites[i], qbertAnimation);
+			qbertAnimator->SetCont(true);
+			qbertAnimator->Start(game->GetGameTime());
+
+			
+		}
+		path.clear();
+	}
+	
 	//void Destroy(void) {} // normally at level program end
 	
 	int currActive() {

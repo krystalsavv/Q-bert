@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "AI.h"
 #include "Disk.h"
+#include <windows.h>
 
 
 
@@ -110,7 +111,8 @@ void Game::update() {
 	case PLAY:
 		ai->logic(GetGameTime());
 		//spriteList.Collision(qbert->GetSprite());
-		AnimatorHolder::Progress(currTime);
+        AnimatorHolder::Progress(currTime);
+
 		break;
 	case PAUSE:
 		break;
@@ -124,7 +126,7 @@ void Game::handleEvents() {
 	switch (game_state) {
 	case PLAY:
 
-
+		
 		SDL_Event event;
 		if (SDL_PollEvent(&event)) {
 			if (!((diskLeft &&  diskLeft->GetMoveTop()) || (diskRight &&  diskRight->GetMoveTop()))) {
@@ -322,13 +324,21 @@ void Game::handleEvents() {
 					break;
 				}
 			}
+			
 		}
+
 
 	case PAUSE:
 		break;
 	case GAMEOVER:
 		break;
 		break;
+	}
+
+	if (terrain->currActive() == 28 && win==false) {
+		win = true;
+		
+		terrain->Epilipsia1();
 	}
 }
 
@@ -416,6 +426,12 @@ void Game::SetQbertToStart() {
 	qbert->moveToStart();
 }
 
+int Game::GetQbertRow() {
+	return qbert->GetCurrRow();
+}
+int Game::GetQbertCol() {
+	return qbert->GetCurrCol();
+}
 
 //gia thn SpriteList (einai ligo akyrh edw alla den exw allo cpp arxeio na thn balw)
 //sort apo to mikrotero zOrder sto megalytero

@@ -29,6 +29,7 @@ public:
 	Disk *diskRight;
 	AI *ai;
 	bool lose = false;
+	bool win = false;
 	game_states game_state;
 	unsigned int GameLife = 3;
 	unsigned int decreaseStop = 0;
@@ -59,6 +60,8 @@ public:
 	void Lose();
 	void Restart();
 	void SetQbertToStart();
+	int GetQbertRow();
+	int GetQbertCol();
 	// a function to access the private running variable   
 	bool running() { return m_bRunning; }
 	SDL_Renderer* GetRenderer();
