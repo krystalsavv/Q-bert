@@ -1,6 +1,7 @@
 #ifndef _ANIMATION_
 #define _ANIMATION_ 
 #include "Sprites.h"
+#include "Game.h"
 
 
 class Animator;
@@ -173,6 +174,23 @@ public:
 				if (cont)
 					currPathFrame = anim->GetStartPathFrame();
 				else {
+					if (!(sprite->GetId().compare("Qbert"))) {
+						if(sprite->GetDestinationRect().y > 700)
+							game->SetQbertToStart();
+						//gia allagh tou frame sto terrain
+						for (auto i = spriteList.GetList().begin(); i != spriteList.GetList().end(); ++i) {
+							if ( !((*i)->GetId().compare(0, 4, "cube"))) {
+								CubeSprite *cube = dynamic_cast<CubeSprite*> (*i);
+								assert(cube);
+									int qbertRow = game->GetQbertRow();
+									int qbertCol = game->GetQbertCol();
+									if (cube->getRow() == qbertRow && cube->getCol() == qbertCol) {
+										(*i)->SetFrame(2);
+									}
+								
+							}
+						}
+					}
 					state = ANIMATOR_FINISHED;
 					NotifyStopped();
 					return true;
@@ -203,6 +221,11 @@ public:
 		sprite->SetFrame(currPathFrame->frame); // pairnei to 1o frame tou animation
 		AnimatorHolder_MarkAsRunning(this);
 	}
+	
+	Sprite * GetSprite() {
+		assert(sprite);
+		return sprite;
+	}
 
 	MovingPathAnimator() {   
 		sprite = nullptr;
@@ -221,11 +244,6 @@ public:
 	}
 	~MovingPathAnimator() {}
 };
-
-
-
-
-
 
 
 class AnimatorHolder {
@@ -253,6 +271,19 @@ public:
 	static void MarkAsSuspended(Animator* a) {
 		running.remove(a);
 		suspended.push_back(a);
+	}
+	static void CleanAnimatorHolder() {
+		auto i = running.begin();
+		while (!running.empty() && i != running.end()) {
+			MovingPathAnimator* prev = dynamic_cast<MovingPathAnimator*>(*i);
+			assert(prev);
+			++i;
+			if (prev->GetSprite()->GetId().compare(0,4,"Disk") && prev->GetSprite()->GetId().compare("Qbert")) {
+				running.remove(prev);
+			}
+		}
+	//	running.clear();
+		suspended.clear();
 	}
 
 	static void Progress(unsigned long currTime) {
