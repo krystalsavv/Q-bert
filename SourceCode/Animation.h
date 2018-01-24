@@ -1,6 +1,7 @@
 #ifndef _ANIMATION_
 #define _ANIMATION_ 
 #include "Sprites.h"
+#include "Game.h"
 
 
 class Animator;
@@ -173,6 +174,20 @@ public:
 				if (cont)
 					currPathFrame = anim->GetStartPathFrame();
 				else {
+					if (!(sprite->GetId().compare("Qbert"))) {
+						for (auto i = spriteList.GetList().begin(); i != spriteList.GetList().end(); ++i) {
+							if ( !((*i)->GetId().compare(0, 4, "cube"))) {
+								CubeSprite *cube = dynamic_cast<CubeSprite*> (*i);
+								assert(cube);
+									int qbertRow = game->GetQbertRow();
+									int qbertCol = game->GetQbertCol();
+									if (cube->getRow() == qbertRow && cube->getCol() == qbertCol) {
+										(*i)->SetFrame(2);
+									}
+								
+							}
+						}
+					}
 					state = ANIMATOR_FINISHED;
 					NotifyStopped();
 					return true;

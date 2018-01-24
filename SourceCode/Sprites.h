@@ -367,6 +367,9 @@ public:
 	void SetActive() {
 		active = true;
 	}
+	void SetInactive() {
+		active =false;
+	}
 	bool isActive() {
 		return active;
 	}
