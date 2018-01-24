@@ -8,6 +8,8 @@
 #include "Ball.h"
 #include "AI.h"
 
+#include "SDL.h"
+
 //global
 Game* game = nullptr;
 SpriteList spriteList = SpriteList(); 
@@ -20,12 +22,31 @@ list<Animator*> AnimatorHolder::suspended;
 
 int AI::sum = 0;
 
-
 int main(int argc, char* args[]) {
 	game = new Game();
-	game->init("Q*bert", 200, 40, 800, 700, 0);
-
-
+	game->init("Q*bert", 200, 40, 800, 700, 0, 0);
+	SDL_Event event;
+	int la = 1;
+	while (la) {
+		if (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				if (event.key.keysym.sym == SDLK_UP) {
+				//	game->init("Q*bert", 200, 40, 800, 700, 0, 1);
+					la = 0;
+					break;
+				}
+			case SDL_QUIT:
+				game->SetRunning(false);
+				break;
+			default:
+				break;
+			}
+		}
+		game->render();		
+	}
+	
+	game->init("Q*bert", 200, 40, 800, 700, 0, 1);
 	IsometricPyramid *terrain = new IsometricPyramid(400, 80, 7, 26,74);
 	Qbert *qbert = new Qbert(377,56);
 	Disk *diskLeft = new Disk("DiskLeft", 70, 350);
@@ -33,7 +54,7 @@ int main(int argc, char* args[]) {
 	diskLeft->Spin();
 	diskRight->Spin();
 	game->SetGameTime();  // arxhkopoiw to game->currTime (den einai swsto ekei kai prepei na fygei apla to xrhsimopoiw gia na dwkomasw to Qbert::Animation())
-
+	
 	AI* ai = new AI(game->GetGameTime());
 	game->SetSprite(terrain, qbert, diskLeft, diskRight, ai);
 	

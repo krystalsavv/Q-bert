@@ -26,45 +26,121 @@ void Game::LifeDecrease() {
 }
 
 
-bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags) {
+bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags,int flag) {
 	/*TheSoundManager::Instance()->load("Sounds/Hop.wav", "Qberthop", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "bye", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/snakeHop", "Snake", SOUND_SFX);*/
-	if (SDL_Init(SDL_INIT_VIDEO) == 0) {
+	if (flag == 0) {
+		game_state = START;
+		if (SDL_Init(SDL_INIT_VIDEO) == 0) {
+			m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
-		game_state = PLAY;
-		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+			if (m_pWindow == nullptr) {
 
-		if (m_pWindow == nullptr) {
+				std::cout << "SDL Error: Failed to create window: " << SDL_GetError() << std::endl;
+				SDL_Quit();
+				return false;
+			}
 
-			std::cout << "SDL Error: Failed to create window: " << SDL_GetError() << std::endl;
-			SDL_Quit();
+			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+			if (m_pRenderer == nullptr) {
+				std::cout << "SDL Error: Failed to create renderer: " << SDL_GetError() << std::endl;
+				SDL_DestroyWindow(m_pWindow);
+				SDL_Quit();
+				return false;
+			}
+		}
+		else {
+			std::cout << "SDL Error: Failed to initialize: " << SDL_GetError() << std::endl;
 			return false;
 		}
-
-		m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
-
-		if (m_pRenderer == nullptr) {
-			std::cout << "SDL Error: Failed to create renderer: " << SDL_GetError() << std::endl;
-			SDL_DestroyWindow(m_pWindow);
-			SDL_Quit();
-			return false;
-		}
+		SDL_Surface * pTempSurface = SDL_LoadBMP("Sprites/startWords.bmp");
+		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
+		SDL_FreeSurface(pTempSurface);
+		SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w, &m_sourceRectangle.h);
+		m_sourceRectangle.x = 0;
+		m_sourceRectangle.y = 0;
+		m_destinationRectangle.w = m_sourceRectangle.w;
+		m_destinationRectangle.h = m_sourceRectangle.h;
+		m_destinationRectangle.x = 200;
+		m_destinationRectangle.y = 250;
+		SDL_Surface * pTempSurface1 = SDL_LoadBMP("Sprites/startNames.bmp");
+		m_pTexture1 = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface1);
+		SDL_FreeSurface(pTempSurface1);
+		SDL_QueryTexture(m_pTexture1, NULL, NULL, &m_sourceRectangle1.w, &m_sourceRectangle1.h);
+		m_sourceRectangle1.x = 0;
+		m_sourceRectangle1.y = 0;
+		m_destinationRectangle1.w = m_sourceRectangle1.w;
+		m_destinationRectangle1.h = m_sourceRectangle1.h;
+		m_destinationRectangle1.x = 0;
+		m_destinationRectangle1.y = 0;
+		SDL_Surface * pTempSurface2 = SDL_LoadBMP("Sprites/startProject.bmp");
+		m_pTexture2 = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface2);
+		SDL_FreeSurface(pTempSurface2);
+		SDL_QueryTexture(m_pTexture2, NULL, NULL, &m_sourceRectangle2.w, &m_sourceRectangle2.h);
+		m_sourceRectangle2.x = 0;
+		m_sourceRectangle2.y = 0;
+		m_destinationRectangle2.w = m_sourceRectangle2.w;
+		m_destinationRectangle2.h = m_sourceRectangle2.h;
+		m_destinationRectangle2.x = 0;
+		m_destinationRectangle2.y = 500;
+		SDL_Surface * pTempSurface3 = SDL_LoadBMP("Sprites/spinning_qbert.bmp");
+		m_pTexture3 = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface3);
+		SDL_FreeSurface(pTempSurface3);
+		SDL_QueryTexture(m_pTexture3, NULL, NULL, &m_sourceRectangle3.w, &m_sourceRectangle3.h);
+		m_sourceRectangle3.x = 0;
+		m_sourceRectangle3.y = 0;
+		m_sourceRectangle3.w = 35;
+		m_sourceRectangle3.h = 35;
+		m_destinationRectangle3.w = 35;
+		m_destinationRectangle3.h = 35;
+		m_destinationRectangle3.x = 250;
+		m_destinationRectangle3.y =100;
 	}
 	else {
-		std::cout << "SDL Error: Failed to initialize: " << SDL_GetError() << std::endl;
-		return false;
+		game_state = PLAY;
+		if (SDL_Init(SDL_INIT_VIDEO) == 0) {
+			m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+
+			if (m_pWindow == nullptr) {
+
+				std::cout << "SDL Error: Failed to create window: " << SDL_GetError() << std::endl;
+				SDL_Quit();
+				return false;
+			}
+
+			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+			if (m_pRenderer == nullptr) {
+				std::cout << "SDL Error: Failed to create renderer: " << SDL_GetError() << std::endl;
+				SDL_DestroyWindow(m_pWindow);
+				SDL_Quit();
+				return false;
+			}
+		}
+		else {
+			std::cout << "SDL Error: Failed to initialize: " << SDL_GetError() << std::endl;
+			return false;
+		}
 	}
 	return true;
 }
 
 
 void Game::render() {
-
 	switch (game_state) {
+	case START:
+		SDL_RenderClear(m_pRenderer);
+		SDL_RenderCopy(m_pRenderer, m_pTexture, &m_sourceRectangle, &m_destinationRectangle);
+		SDL_RenderCopy(m_pRenderer, m_pTexture1, &m_sourceRectangle1, &m_destinationRectangle1);
+		SDL_RenderCopy(m_pRenderer, m_pTexture2, &m_sourceRectangle2, &m_destinationRectangle2);
+		SDL_RenderCopy(m_pRenderer, m_pTexture3, &m_sourceRectangle3, &m_destinationRectangle3);
+		SDL_RenderPresent(m_pRenderer);
+		break;
 	case PLAY:
 		SDL_RenderClear(m_pRenderer);
 		spriteList.Display();
@@ -73,6 +149,8 @@ void Game::render() {
 	case PAUSE:
 		break;
 	case GAMEOVER:
+		break;
+	default:
 		break;
 	}
 }
@@ -123,6 +201,10 @@ void Game::Collision() {
 
 void Game::update() {
 	switch (game_state) {
+	case START:
+		m_sourceRectangle3.x = 32 * int(((SDL_GetTicks() / 150) % 6));
+		m_destinationRectangle3.x = 32.5 * int(((SDL_GetTicks() / 150) % 25));
+		break;
 	case PLAY:
 		ai->logic(GetGameTime());
 		//spriteList.Collision(qbert->GetSprite());
@@ -138,15 +220,20 @@ void Game::update() {
 
 void Game::handleEvents() {
 	switch (game_state) {
-	case PLAY:
-
-
 		SDL_Event event;
+	case START:
+		
+		
+	case PLAY:
+	//SDL_Event event;
 		if (SDL_PollEvent(&event)) {
 			if (!((diskLeft &&  diskLeft->GetMoveTop()) || (diskRight &&  diskRight->GetMoveTop()))) {
 				switch (event.type) {
 				case SDL_KEYDOWN:
 					if (event.key.keysym.sym == SDLK_UP)
+
+
+
 					{
 						if (qbert->GetCurrRow() == qbert->GetCurrCol()) {
 							//check for disk and then new event
@@ -363,11 +450,11 @@ void Game::handleEvents() {
 				}
 			}
 		}
-
 	case PAUSE:
 		break;
 	case GAMEOVER:
 		break;
+	default:
 		break;
 	}
 }
@@ -379,6 +466,10 @@ void Game::clean() {
 	SDL_DestroyRenderer(m_pRenderer);
 	//TheSoundManager::Instance()->clearSoundMap();
 	SDL_Quit();
+}
+
+void Game::SetRunning(bool b) {
+	m_bRunning = b;
 }
 
 SDL_Renderer* Game::GetRenderer() {

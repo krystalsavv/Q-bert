@@ -15,12 +15,14 @@ class Snake;
 class Ball;
 class Sprite;
 
+
 class Game {
 	unsigned long currTime = 0;
 	enum game_states {
 		PAUSE = 0,
 		PLAY = 1,
-		GAMEOVER = 2
+		GAMEOVER = 2,
+		START = 3
 	};
 public:
 	IsometricPyramid * terrain;
@@ -35,7 +37,7 @@ public:
 	~Game();
 	void LifeDecrease();
 	// simply set the running variable to true  
-	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
+	bool init(const char* title, int xpos, int ypos, int width, int height, int flags,int flag);
 	void render();
 	void update();
 	void handleEvents();
@@ -49,6 +51,7 @@ public:
 	void SetGameTime();
 	void SetDiskRightMoveTop(bool b);
 	void SetDiskLeftMoveTop(bool b);
+	void SetRunning(bool b);
 	unsigned long GetGameTime();
 	AI* GetAI();
 	Snake * GetSnake();
@@ -56,12 +59,24 @@ public:
 	bool GetSnakeIsBall();
 	void SetSnakeIsBall(bool b);
 	// a function to access the private running variable   
-	bool running() { return m_bRunning; }
+	bool running(){ return m_bRunning; }
 	SDL_Renderer* GetRenderer();
 
 private:
 	SDL_Window * m_pWindow;
 	SDL_Renderer* m_pRenderer;
+	SDL_Texture* m_pTexture; // the new SDL_Texture variable 
+	SDL_Rect m_sourceRectangle; // the first rectangle 
+	SDL_Rect m_destinationRectangle; // another rectangle
+	SDL_Texture* m_pTexture1; // the new SDL_Texture variable 
+	SDL_Rect m_sourceRectangle1; // the first rectangle 
+	SDL_Rect m_destinationRectangle1; // another rectangle
+	SDL_Texture* m_pTexture2; // the new SDL_Texture variable 
+	SDL_Rect m_sourceRectangle2; // the first rectangle 
+	SDL_Rect m_destinationRectangle2; // another rectangle
+	SDL_Texture* m_pTexture3; // the new SDL_Texture variable 
+	SDL_Rect m_sourceRectangle3; // the first rectangle 
+	SDL_Rect m_destinationRectangle3; // another rectangle
 	bool m_bRunning;
 };
 
