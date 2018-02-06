@@ -6,7 +6,7 @@
 #include "AI.h"
 #include "Disk.h"
 #include <windows.h>
-
+#include "SoundManager.h"
 
 
 
@@ -24,12 +24,15 @@ void Game::LoseLife() {
 
 
 bool Game::init(const char * title, int xpos, int ypos, int width, int height, int flags,int flag) {
-	/*TheSoundManager::Instance()->load("Sounds/Hop.wav", "Qberthop", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/Hop.wav", "Qberthop", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/QbertFall.wav", "QbertFalls", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/ByeBye.wav", "bye", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/disk.wav", "disk", SOUND_SFX);
 	TheSoundManager::Instance()->load("Sounds/BallHop.wav", "Ball", SOUND_SFX);
-	TheSoundManager::Instance()->load("Sounds/snakeHop", "Snake", SOUND_SFX);*/
+	TheSoundManager::Instance()->load("Sounds/snakeHop.wav", "Snake", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/Sware1.wav", "Sware1", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/win.wav", "win", SOUND_SFX);
+	TheSoundManager::Instance()->load("Sounds/intro.wav", "intro", SOUND_SFX);
 	if (flag == 0) {
 		game_state = START;
 		if (SDL_Init(SDL_INIT_VIDEO) == 0) {
@@ -55,7 +58,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 			std::cout << "SDL Error: Failed to initialize: " << SDL_GetError() << std::endl;
 			return false;
 		}
-		SDL_Surface * pTempSurface = SDL_LoadBMP("Sprites/startWords.bmp");
+		SDL_Surface * pTempSurface = SDL_LoadBMP("Sprites/start.bmp");
 		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
 		SDL_FreeSurface(pTempSurface);
 		SDL_QueryTexture(m_pTexture, NULL, NULL, &m_sourceRectangle.w, &m_sourceRectangle.h);
@@ -97,6 +100,7 @@ bool Game::init(const char * title, int xpos, int ypos, int width, int height, i
 		m_destinationRectangle3.h = 35;
 		m_destinationRectangle3.x = 250;
 		m_destinationRectangle3.y =100;
+		TheSoundManager::Instance()->playSound("intro", 0);
 	}
 	else {
 		game_state = PLAY;
@@ -165,6 +169,7 @@ void Game::Collision() {
 
 			if (DoBoxesIntersect(qbert->GetSprite(), (*i))) {
 				cout << "Colission with ball" << endl;
+				TheSoundManager::Instance()->playSound("Sware1", 0);
 				LoseLife();
 			}
 
@@ -177,6 +182,7 @@ void Game::Collision() {
 				ai->GetSnake()->GetCurrCol() == qbert->GetCurrCol() &&
 				ai->GetSnake()->GetCurrRow() == qbert->GetCurrRow()) {
 				cout << "Colission with Snake" << endl;
+				TheSoundManager::Instance()->playSound("Sware1", 0);
 				LoseLife();
 			}
 
@@ -219,8 +225,8 @@ void Game::handleEvents() {
 							//OR
 							//Here we lose
 							if (qbert->GetCurrRow() == 5 && diskRight->GetIsActive()) {
-								//TheSoundManager::Instance()->playsound("bye", 0);
-								//TheSoundManager::Instance()->playsound("disk", 0);
+								TheSoundManager::Instance()->playSound("bye", 0);
+								TheSoundManager::Instance()->playSound("disk", 0);
 								diskRight->MoveUpRight();
 								qbert->MoveUpDiskRight();
 								qbert->Restore();
@@ -252,12 +258,12 @@ void Game::handleEvents() {
 							qbert->SetZOrder(5);
 							spriteList.GetList().sort(compare);
 							qbertAnimator->Start(game->GetGameTime());
-							//TheSoundManager::Instance()->playsound("QbertFalls", 0);
+							TheSoundManager::Instance()->playSound("QbertFalls", 0);
 							LoseLife();
 						}
 						else {
 							qbert->moveUpRight();
-							//TheSoundManager::Instance()->playsound("Qberthop", 0);
+							TheSoundManager::Instance()->playSound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Qbert Position changed to : ";
@@ -292,11 +298,12 @@ void Game::handleEvents() {
 								spriteList.GetList().sort(compare);
 							}
 							qbertAnimator->Start(game->GetGameTime());
+							TheSoundManager::Instance()->playSound("QbertFalls", 0);
 							LoseLife();
 						}
 						else {
 							qbert->moveDownLeft();
-							//TheSoundManager::Instance()->playsound("Qberthop", 0);
+							TheSoundManager::Instance()->playSound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Qbert Position changed to : ";
@@ -333,14 +340,14 @@ void Game::handleEvents() {
 								spriteList.GetList().sort(compare);
 							}
 							qbertAnimator->Start(game->GetGameTime());
-
+							TheSoundManager::Instance()->playSound("QbertFalls", 0);
 							LoseLife();
 
 
 						}
 						else {
 							qbert->moveDownRight();
-							//TheSoundManager::Instance()->playsound("Qberthop", 0);
+							TheSoundManager::Instance()->playSound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "qbert Position changed to : ";
@@ -351,8 +358,8 @@ void Game::handleEvents() {
 					else if (event.key.keysym.sym == SDLK_LEFT) {
 						if (qbert->GetCurrCol() == 1) {
 							if (qbert->GetCurrRow() == 5 && diskLeft->GetIsActive()) {
-								//TheSoundManager::Instance()->playsound("bye", 0);
-								//TheSoundManager::Instance()->playsound("disk", 0);
+								TheSoundManager::Instance()->playSound("bye", 0);
+								TheSoundManager::Instance()->playSound("disk", 0);
 								diskLeft->MoveUpLeft();
 								qbert->MoveUpDiskLeft();
 								qbert->Restore();
@@ -383,11 +390,12 @@ void Game::handleEvents() {
 							qbert->SetZOrder(5);
 							spriteList.GetList().sort(compare);
 							qbertAnimator->Start(game->GetGameTime());
+							TheSoundManager::Instance()->playSound("QbertFalls", 0);
 							LoseLife();
 						}
 						else {
 							qbert->moveUpLeft();
-							//TheSoundManager::Instance()->playsound("Qberthop", 0);
+							TheSoundManager::Instance()->playSound("Qberthop", 0);
 							terrain->SetActive(qbert->GetCurrCol(), qbert->GetCurrRow());
 							cout << "Current active : " << terrain->currActive() << endl;
 							cout << "Position changed to : ";
@@ -409,7 +417,7 @@ void Game::handleEvents() {
 
 		if (terrain->currActive() == 28 && win == false) {
 			win = true;
-
+			TheSoundManager::Instance()->playSound("win", 0);
 			terrain->Epilipsia1();
 		}
 	}
@@ -420,7 +428,7 @@ void Game::clean() {
 	std::cout << "cleaning game\n";
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
-	//TheSoundManager::Instance()->clearSoundMap();
+	TheSoundManager::Instance()->clearSoundMap();
 	SDL_Quit();
 }
 

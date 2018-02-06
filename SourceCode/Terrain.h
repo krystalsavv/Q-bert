@@ -66,6 +66,21 @@ public:
 				if (!sprites[i]->isActive()) {
 					sprites[i]->SetActive();
 					//sprites[i]->SetFrame(2);
+					/*PathEntry *p2 = new PathEntry(0, 0, 4,100);
+
+					PathEntry *p3 = new PathEntry(0, 0, 2,1500);
+
+
+					path.push_back(*p2);
+					path.push_back(*p3);
+
+
+					MovingPathAnimation* qbertAnimation = new MovingPathAnimation(path, "Terrain" + i);
+					MovingPathAnimator* qbertAnimator = new MovingPathAnimator(sprites[i], qbertAnimation);
+					qbertAnimator->SetCont(true);
+					qbertAnimator->Start(game->GetGameTime());
+					path.clear();*/
+
 					activeCubes++;
 				}
 

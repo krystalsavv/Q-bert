@@ -449,6 +449,7 @@ public:
 					int col = game->GetSnake()->GetCurrCol() + ColList.front(); // ypologizw col
 					game->GetSnake()->UpdateRowCol(row, col);
 				//	cout << "SNAKE BALL: row->" << game->GetSnake()->GetCurrRow() << " col->" << game->GetSnake()->GetCurrCol() << endl;
+					TheSoundManager::Instance()->playSound("Snake", 0);
 				}
 				else {
 				int row = game->GetBall(sprite)->GetCurrRow() + 1; 
@@ -456,7 +457,7 @@ public:
 				game->GetBall(sprite)->UpdateRowCol(row, col);
 			//	cout << "BALL " << sprite->GetId() <<": row->" << game->GetBall(sprite)->GetCurrRow() << " col->" << game->GetBall(sprite)->GetCurrCol() << endl;
 				}
-				//TheSoundManager::Instance()->playSound("Ball", 0);
+				TheSoundManager::Instance()->playSound("Ball", 0);
 				ColList.pop_front();
 			}
 			if (currPathFrame == anim->GetEndPathFrame()) {

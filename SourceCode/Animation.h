@@ -181,7 +181,7 @@ public:
 						for (auto i = spriteList.GetList().begin(); i != spriteList.GetList().end(); ++i) {
 							if ( !((*i)->GetId().compare(0, 4, "cube"))) {
 								CubeSprite *cube = dynamic_cast<CubeSprite*> (*i);
-								assert(cube);
+							//	assert(cube);
 									int qbertRow = game->GetQbertRow();
 									int qbertCol = game->GetQbertCol();
 									if (cube->getRow() == qbertRow && cube->getCol() == qbertCol) {

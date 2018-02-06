@@ -1,6 +1,6 @@
 #ifndef SOUNDMANAGER_H_DEFINED
 #define SOUNDMANAGER_H_DEFINED
-/*
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -37,5 +37,5 @@ private:
 };
 
 typedef SoundManager TheSoundManager;
-*/
+
 #endif /* defined(SOUNDMANAGER_H_DEFINED) */
